@@ -44,7 +44,7 @@ To set up the VetDataHub locally, follow these steps:
    ```
 
 3. **Set up the database:**
-   Configure your database settings in the `settings.py` file and run:
+   Configure your database settings in the `settings.py` file, which you can find in the ``vetdatahub``, folder and run:
    ```bash
    python manage.py migrate
    ```

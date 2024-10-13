@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 88  
+ignore = E203, W503, F403, F401  
+exclude =
+    .git,
+    __pycache__,
+    migrations,  
+    static,      
+    media,       
+    manage.py
+
+
+max-complexity = 10
