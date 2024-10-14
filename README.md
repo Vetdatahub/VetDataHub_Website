@@ -7,13 +7,15 @@
 
 ## Table of Contents
 
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [VetDataHub\_Website](#vetdatahub_website)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [API Documentation](#api-documentation)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
 
 ## Features
 
@@ -73,13 +75,7 @@ For detailed information on how to interact with the VetDataHub API, refer to th
 ## Contributing
 
 We welcome contributions to improve VetDataHub! To contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them.
-4. Push to your branch and open a pull request.
-
-Please ensure your code adheres to the project's coding standards and includes tests where applicable.
+[Read](./CONTRIBUTING.md)
 
 ## License
 
