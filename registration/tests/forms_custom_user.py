@@ -7,7 +7,7 @@ from registration import forms
 from registration.users import UsernameField
 
 
-@override_settings(AUTH_USER_MODEL='test_app.CustomUser')
+@override_settings(AUTH_USER_MODEL="test_app.CustomUser")
 class RegistrationFormTests(TestCase):
     """
     Test the default registration forms.
@@ -35,10 +35,12 @@ class RegistrationFormTests(TestCase):
         Test that ``RegistrationForm`` subclasses can save
 
         """
-        data = {'new_field': 'custom username',
-                'email': 'foo@example.com',
-                'password1': 'foo',
-                'password2': 'foo'}
+        data = {
+            "new_field": "custom username",
+            "email": "foo@example.com",
+            "password1": "foo",
+            "password2": "foo",
+        }
 
         form = forms.RegistrationForm(data=data)
 
