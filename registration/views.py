@@ -13,11 +13,13 @@ from django.views.generic.edit import FormView
 
 from registration.forms import ResendActivationForm
 
-REGISTRATION_FORM_PATH = getattr(settings, 'REGISTRATION_FORM',
-                                 'registration.forms.RegistrationForm')
+REGISTRATION_FORM_PATH = getattr(
+    settings, "REGISTRATION_FORM", "registration.forms.RegistrationForm"
+)
 REGISTRATION_FORM = import_string(REGISTRATION_FORM_PATH)
 ACCOUNT_AUTHENTICATED_REGISTRATION_REDIRECTS = getattr(
-    settings, 'ACCOUNT_AUTHENTICATED_REGISTRATION_REDIRECTS', True)
+    settings, "ACCOUNT_AUTHENTICATED_REGISTRATION_REDIRECTS", True
+)
 
 
 class RegistrationView(FormView):
@@ -25,13 +27,14 @@ class RegistrationView(FormView):
     Base class for user registration views.
 
     """
-    disallowed_url = 'registration_disallowed'
-    form_class = REGISTRATION_FORM
-    http_method_names = ['get', 'post', 'head', 'options', 'trace']
-    success_url = None
-    template_name = 'registration/registration_form.html'
 
-    @method_decorator(sensitive_post_parameters('password1', 'password2'))
+    disallowed_url = "registration_disallowed"
+    form_class = REGISTRATION_FORM
+    http_method_names = ["get", "post", "head", "options", "trace"]
+    success_url = None
+    template_name = "registration/registration_form.html"
+
+    @method_decorator(sensitive_post_parameters("password1", "password2"))
     def dispatch(self, request, *args, **kwargs):
         """
         Check that user signup is allowed and if user is logged in before even bothering to
@@ -43,10 +46,13 @@ class RegistrationView(FormView):
                 if settings.LOGIN_REDIRECT_URL is not None:
                     return redirect(settings.LOGIN_REDIRECT_URL)
                 else:
-                    raise Exception((
-                        'You must set a URL with LOGIN_REDIRECT_URL in '
-                        'settings.py or set '
-                        'ACCOUNT_AUTHENTICATED_REGISTRATION_REDIRECTS=False'))
+                    raise Exception(
+                        (
+                            "You must set a URL with LOGIN_REDIRECT_URL in "
+                            "settings.py or set "
+                            "ACCOUNT_AUTHENTICATED_REGISTRATION_REDIRECTS=False"
+                        )
+                    )
 
         if not self.registration_allowed():
             return redirect(self.disallowed_url)
@@ -57,7 +63,9 @@ class RegistrationView(FormView):
         success_url = self.get_success_url(new_user)
 
         if hasattr(self.request, "session"):
-            self.request.session['registration_email'] = form.cleaned_data['email']
+            self.request.session["registration_email"] = form.cleaned_data[
+                "email"
+            ]
 
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it
@@ -97,8 +105,9 @@ class ActivationView(TemplateView):
     Base class for user activation views.
 
     """
-    http_method_names = ['get']
-    template_name = 'registration/activate.html'
+
+    http_method_names = ["get"]
+    template_name = "registration/activate.html"
 
     def get(self, request, *args, **kwargs):
         activated_user = self.activate(*args, **kwargs)
@@ -127,8 +136,9 @@ class ResendActivationView(FormView):
     """
     Base class for resending activation views.
     """
+
     form_class = ResendActivationForm
-    template_name = 'registration/resend_activation_form.html'
+    template_name = "registration/resend_activation_form.html"
 
     def form_valid(self, form):
         """
@@ -155,8 +165,8 @@ class ResendActivationView(FormView):
 
 class ApprovalView(TemplateView):
 
-    http_method_names = ['get']
-    template_name = 'registration/admin_approve.html'
+    http_method_names = ["get"]
+    template_name = "registration/admin_approve.html"
 
     def get(self, request, *args, **kwargs):
         approved_user = self.approve(*args, **kwargs)

@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 # Adding some backwards compatibility for SHA1
 # The 40 probably should be removed later on
-SHA256_RE = re.compile('^[a-f0-9]{40,64}$')
+SHA256_RE = re.compile("^[a-f0-9]{40,64}$")
 
 
 def get_from_email(site=None):
@@ -38,46 +38,52 @@ def get_from_email(site=None):
     username. Otherwise the `REGISTRATION_DEFAULT_FROM_EMAIL` or
     `DEFAULT_FROM_EMAIL` settings are used.
     """
-    if getattr(settings, 'REGISTRATION_USE_SITE_EMAIL', False):
-        user_email = getattr(settings, 'REGISTRATION_SITE_USER_EMAIL', None)
+    if getattr(settings, "REGISTRATION_USE_SITE_EMAIL", False):
+        user_email = getattr(settings, "REGISTRATION_SITE_USER_EMAIL", None)
         if not user_email:
-            raise ImproperlyConfigured((
-                'REGISTRATION_SITE_USER_EMAIL must be set when using '
-                'REGISTRATION_USE_SITE_EMAIL.'))
-        Site = apps.get_model('sites', 'Site')
+            raise ImproperlyConfigured(
+                (
+                    "REGISTRATION_SITE_USER_EMAIL must be set when using "
+                    "REGISTRATION_USE_SITE_EMAIL."
+                )
+            )
+        Site = apps.get_model("sites", "Site")
         site = site or Site.objects.get_current()
-        from_email = '{}@{}'.format(user_email, site.domain)
+        from_email = "{}@{}".format(user_email, site.domain)
     else:
-        from_email = getattr(settings, 'REGISTRATION_DEFAULT_FROM_EMAIL',
-                             settings.DEFAULT_FROM_EMAIL)
+        from_email = getattr(
+            settings,
+            "REGISTRATION_DEFAULT_FROM_EMAIL",
+            settings.DEFAULT_FROM_EMAIL,
+        )
     return from_email
 
 
-def send_email(addresses_to, ctx_dict, subject_template, body_template,
-               body_html_template):
+def send_email(
+    addresses_to, ctx_dict, subject_template, body_template, body_html_template
+):
     """
     Function that sends an email
     """
 
-    prefix = getattr(settings, 'REGISTRATION_EMAIL_SUBJECT_PREFIX', '')
+    prefix = getattr(settings, "REGISTRATION_EMAIL_SUBJECT_PREFIX", "")
     subject = prefix + render_to_string(subject_template, ctx_dict)
     # Email subject *must not* contain newlines
-    subject = ''.join(subject.splitlines())
-    from_email = get_from_email(ctx_dict.get('site'))
-    message_txt = render_to_string(body_template,
-                                   ctx_dict)
+    subject = "".join(subject.splitlines())
+    from_email = get_from_email(ctx_dict.get("site"))
+    message_txt = render_to_string(body_template, ctx_dict)
 
-    email_message = EmailMultiAlternatives(subject, message_txt,
-                                           from_email, addresses_to)
+    email_message = EmailMultiAlternatives(
+        subject, message_txt, from_email, addresses_to
+    )
 
-    if getattr(settings, 'REGISTRATION_EMAIL_HTML', True):
+    if getattr(settings, "REGISTRATION_EMAIL_HTML", True):
         try:
-            message_html = render_to_string(
-                body_html_template, ctx_dict)
+            message_html = render_to_string(body_html_template, ctx_dict)
         except TemplateDoesNotExist:
             pass
         else:
-            email_message.attach_alternative(message_html, 'text/html')
+            email_message.attach_alternative(message_html, "text/html")
 
     email_message.send()
 
@@ -157,8 +163,15 @@ class RegistrationManager(models.Manager):
 
         return (False, False)
 
-    def create_inactive_user(self, site, new_user=None, send_email=True,
-                             request=None, profile_info={}, **user_info):
+    def create_inactive_user(
+        self,
+        site,
+        new_user=None,
+        send_email=True,
+        request=None,
+        profile_info={},
+        **user_info
+    ):
         """
         Create a new, inactive ``User``, generate a
         ``RegistrationProfile`` and email its activation key to the
@@ -171,7 +184,7 @@ class RegistrationManager(models.Manager):
 
         """
         if new_user is None:
-            password = user_info.pop('password')
+            password = user_info.pop("password")
             new_user = UserModel()(**user_info)
             new_user.set_password(password)
         new_user.is_active = False
@@ -182,14 +195,14 @@ class RegistrationManager(models.Manager):
 
         with transaction.atomic():
             new_user.save()
-            registration_profile = self.create_profile(
-                new_user, **profile_info)
+            registration_profile = self.create_profile(new_user, **profile_info)
 
             # send email only if desired and transaction succeeds
             if send_email:
                 transaction.on_commit(
                     lambda: registration_profile.send_activation_email(
-                        site, request)
+                        site, request
+                    )
                 )
 
         return new_user
@@ -205,7 +218,7 @@ class RegistrationManager(models.Manager):
         """
         profile = self.model(user=user, **profile_info)
 
-        if 'activation_key' not in profile_info:
+        if "activation_key" not in profile_info:
             profile.create_new_activation_key(save=False)
 
         profile.save()
@@ -279,15 +292,25 @@ class RegistrationManager(models.Manager):
             try:
                 if profile.activation_key_expired():
                     user = profile.user
-                    logger.warning('Deleting expired Registration profile {} and user {}.'.format(profile, user))
+                    logger.warning(
+                        "Deleting expired Registration profile {} and user {}.".format(
+                            profile, user
+                        )
+                    )
                     try:
                         profile.delete()
                         user.delete()
                     except (models.ProtectedError, models.RestrictedError) as e:
-                        logger.error('Deletion of user {} is prevented: {}'.format(user, e))
+                        logger.error(
+                            "Deletion of user {} is prevented: {}".format(
+                                user, e
+                            )
+                        )
                     deleted_count += 1
             except UserModel().DoesNotExist:
-                logger.warning('Deleting expired Registration profile {}'.format(profile))
+                logger.warning(
+                    "Deleting expired Registration profile {}".format(profile)
+                )
                 profile.delete()
                 deleted_count += 1
         return deleted_count
@@ -313,16 +336,16 @@ class RegistrationProfile(models.Model):
     user = models.OneToOneField(
         UserModelString(),
         on_delete=models.CASCADE,
-        verbose_name=_('user'),
+        verbose_name=_("user"),
     )
-    activation_key = models.CharField(_('activation key'), max_length=64)
+    activation_key = models.CharField(_("activation key"), max_length=64)
     activated = models.BooleanField(default=False)
 
     objects = RegistrationManager()
 
     class Meta:
-        verbose_name = _('registration profile')
-        verbose_name_plural = _('registration profiles')
+        verbose_name = _("registration profile")
+        verbose_name_plural = _("registration profiles")
 
     def __str__(self):
         return "Registration information for %s" % self.user
@@ -332,9 +355,9 @@ class RegistrationProfile(models.Model):
         Create a new activation key for the user
         """
         random_string = get_random_string(
-            length=32, allowed_chars=string.printable)
-        self.activation_key = hashlib.sha256(
-            random_string.encode()).hexdigest()
+            length=32, allowed_chars=string.printable
+        )
+        self.activation_key = hashlib.sha256(random_string.encode()).hexdigest()
 
         if save:
             self.save()
@@ -363,7 +386,8 @@ class RegistrationProfile(models.Model):
 
         """
         max_expiry_days = datetime.timedelta(
-            days=settings.ACCOUNT_ACTIVATION_DAYS)
+            days=settings.ACCOUNT_ACTIVATION_DAYS
+        )
         expiration_date = self.user.date_joined + max_expiry_days
         return self.activated or expiration_date <= datetime_now()
 
@@ -417,40 +441,52 @@ class RegistrationProfile(models.Model):
             If supplied will be passed to the template for better
             flexibility via ``RequestContext``.
         """
-        activation_email_subject = getattr(settings, 'ACTIVATION_EMAIL_SUBJECT',
-                                           'registration/activation_email_subject.txt')
-        activation_email_body = getattr(settings, 'ACTIVATION_EMAIL_BODY',
-                                        'registration/activation_email.txt')
-        activation_email_html = getattr(settings, 'ACTIVATION_EMAIL_HTML',
-                                        'registration/activation_email.html')
+        activation_email_subject = getattr(
+            settings,
+            "ACTIVATION_EMAIL_SUBJECT",
+            "registration/activation_email_subject.txt",
+        )
+        activation_email_body = getattr(
+            settings,
+            "ACTIVATION_EMAIL_BODY",
+            "registration/activation_email.txt",
+        )
+        activation_email_html = getattr(
+            settings,
+            "ACTIVATION_EMAIL_HTML",
+            "registration/activation_email.html",
+        )
 
         ctx_dict = {
-            'user': self.user,
-            'activation_key': self.activation_key,
-            'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-            'site': site,
+            "user": self.user,
+            "activation_key": self.activation_key,
+            "expiration_days": settings.ACCOUNT_ACTIVATION_DAYS,
+            "site": site,
         }
-        prefix = getattr(settings, 'REGISTRATION_EMAIL_SUBJECT_PREFIX', '')
+        prefix = getattr(settings, "REGISTRATION_EMAIL_SUBJECT_PREFIX", "")
         subject = prefix + render_to_string(
             activation_email_subject, ctx_dict, request=request
         )
 
         # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
+        subject = "".join(subject.splitlines())
         from_email = get_from_email(site)
-        message_txt = render_to_string(activation_email_body,
-                                       ctx_dict, request=request)
+        message_txt = render_to_string(
+            activation_email_body, ctx_dict, request=request
+        )
 
-        email_message = EmailMultiAlternatives(subject, message_txt,
-                                               from_email, [self.user.email])
+        email_message = EmailMultiAlternatives(
+            subject, message_txt, from_email, [self.user.email]
+        )
 
-        if getattr(settings, 'REGISTRATION_EMAIL_HTML', True):
+        if getattr(settings, "REGISTRATION_EMAIL_HTML", True):
             try:
                 message_html = render_to_string(
-                    activation_email_html, ctx_dict, request=request)
+                    activation_email_html, ctx_dict, request=request
+                )
             except TemplateDoesNotExist:
                 pass
             else:
-                email_message.attach_alternative(message_html, 'text/html')
+                email_message.attach_alternative(message_html, "text/html")
 
         email_message.send()
