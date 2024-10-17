@@ -5,18 +5,6 @@
 
 **VetDataHub** is an open-source veterinary dataset repository aimed at facilitating the sharing and exchange of diverse datasets in the veterinary field. The platform is designed to handle large datasets efficiently, support collaboration among researchers and practitioners, and provide tools for exploring and contributing to datasets.
 
-## Table of Contents
-
-- [VetDataHub\_Website](#vetdatahub_website)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [API Documentation](#api-documentation)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Contact](#contact)
-
 ## Features
 
 - **Dataset Hosting:** Easily upload and host your veterinary datasets.
@@ -68,9 +56,8 @@ Once the application is running, you can:
 - **Participate in discussions** and provide feedback on datasets.
 - **Access the API** for programmatic access to datasets.
 
-## API Documentation
-
-For detailed information on how to interact with the VetDataHub API, refer to the [API Documentation](link/to/api/docs).
+## Commmunity 
+You can join the VetDataHub community on discord [here](https://discord.gg/XEKB767wgT)
 
 ## Contributing
 
