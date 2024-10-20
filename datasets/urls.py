@@ -1,3 +1,7 @@
 from django.urls import path
 
-urlpatterns = []
+from analytics import views
+
+urlpatterns = [
+    path('',views.datasets,name='datasets')
+]
