@@ -7,6 +7,7 @@ import warnings
 
 from django.apps import apps
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ImproperlyConfigured
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.exceptions import ObjectDoesNotExist
@@ -314,6 +315,10 @@ class RegistrationManager(models.Manager):
                 profile.delete()
                 deleted_count += 1
         return deleted_count
+
+
+class User(AbstractUser):
+    pass
 
 
 class RegistrationProfile(models.Model):
