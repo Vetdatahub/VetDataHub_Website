@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <!-- SEO Meta Tags -->
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
+    <meta content="VetDataHub" property="og:site_name"/> <!-- website name -->
+    <meta content="" property="og:site"/> <!-- website link -->
+    <meta content="" property="og:title"/> <!-- title shown in the actual shared post -->
+    <meta content="" property="og:description"/> <!-- description shown in the actual shared post -->
+    <meta content="" property="og:image"/> <!-- image link, make sure it's jpg -->
+    <meta content="" property="og:url"/> <!-- where do you want your post to link to -->
+    <meta content="article" property="og:type"/>
+
+    <title>{% block title %}{% endblock %}</title>
+
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext"
+          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Favicon  -->
+    <link href="{% static 'images/icon.png' %}" rel="icon">
+</head>
+
+<body>
+{% include "navbar.html" %}
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+{% include 'footer.html' %}
+
+</body>
+</html>
