@@ -9,7 +9,7 @@ you're using a custom model.
 """
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import BaseUserCreationForm
 
 from .users import UserModel
 from .users import UsernameField
@@ -18,7 +18,7 @@ from .utils import _
 User = UserModel()
 
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(BaseUserCreationForm):
     """
     Form for registering a new user account.
 
@@ -32,7 +32,7 @@ class RegistrationForm(UserCreationForm):
 
     """
 
-    required_css_class = "required"
+    required_css_class = "required "
     email = forms.EmailField(label=_("E-mail"))
 
     class Meta:
