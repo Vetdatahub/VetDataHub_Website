@@ -22,3 +22,8 @@ def home(request):
 
     return render(request,"home/home.html",context={"form": form})
 
+def about(request):
+    return render(request,'about.html')
+
+def contact(request):
+    return render(request,'about.html')
