@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.db.models import Avg
 
 
 class Tag(models.Model):
@@ -24,7 +25,6 @@ class Dataset(models.Model):
     tags = models.ManyToManyField(Tag, related_name="datasets")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_public = models.BooleanField(default=True)
     dataset_type = models.CharField(max_length=50, choices=DATASET_TYPES)
 
     def __str__(self):
