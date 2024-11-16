@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+{% load static %}
+ <section class="flex flex  gap-8 mt-8 flex-col items-center text-center py-16 bg-white">
+        <img src="{% static 'images/dog-image.png' %} " alt="Dog" class="h-64 w-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mt-4">VetDataHub is an open-source platform for sharing veterinary datasets to advance medical research.</h1>
+    </section>
+
+    <!-- Features Section -->
+<!--
+    <section class="py-16 bg-gray-100">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800">Explore Our Features</h2>
+            <p class="text-gray-600 mt-2">Key features of this project include secure user login and authentication, dataset management, and a user-friendly interface.</p>
+        </div>
+        <div class="flex justify-center space-x-8">
+            <div class="flex flex-col items-center">
+                <i class="fas fa-eye text-4xl text-green-500"></i>
+                <p class="mt-2 font-semibold">View Datasets</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <i class="fas fa-upload text-4xl text-green-500"></i>
+                <p class="mt-2 font-semibold">Upload Datasets</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <i class="fas fa-download text-4xl text-green-500"></i>
+                <p class="mt-2 font-semibold">Download Datasets</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <i class="fas fa-database text-4xl text-green-500"></i>
+                <p class="mt-2 font-semibold">Explore Datasets</p>
+            </div>
+        </div>
+    </section>
+-->
+<div class="flex  gap-8 mt-8 ">
+
+    <!-- Feature: Diverse Datasets -->
+    <div class="flex flex-col items-center p-6 border border-gray-200 rounded-lg shadow-lg">
+        <i class="fas fa-database text-4xl text-green-500"></i>
+        <p class="mt-4 font-semibold text-lg">Diverse Datasets</p>
+        <p class="mt-2 text-sm text-gray-600">
+            Explore a wide range of veterinary datasets, including medical images, clinical records, genomic data, epidemiological data, and more.
+        </p>
+    </div>
+
+    <!-- Feature: Community Collaboration -->
+    <div class="flex flex-col items-center p-6 border border-gray-200 rounded-lg shadow-lg">
+        <i class="fas fa-users text-4xl text-green-500"></i>
+        <p class="mt-4 font-semibold text-lg">Community Collaboration</p>
+        <p class="mt-2 text-sm text-gray-600">
+            Engage with a vibrant community of contributors and users passionate about leveraging data science for animal welfare.
+        </p>
+    </div>
+
+    <!-- Feature: Open Access -->
+    <div class="flex flex-col items-center p-6 border border-gray-200 rounded-lg shadow-lg">
+        <i class="fas fa-unlock-alt text-4xl text-green-500"></i>
+        <p class="mt-4 font-semibold text-lg">Open Access</p>
+        <p class="mt-2 text-sm text-gray-600">
+            Access datasets freely, empowering researchers, students, and practitioners to address pressing challenges in veterinary medicine.
+        </p>
+    </div>
+
+    <!-- Feature: Ethical Standards -->
+    <div class="flex flex-col items-center p-6 border border-gray-200 rounded-lg shadow-lg">
+        <i class="fas fa-shield-alt text-4xl text-green-500"></i>
+        <p class="mt-4 font-semibold text-lg">Ethical Standards</p>
+        <p class="mt-2 text-sm text-gray-600">
+            Uphold ethical standards and data privacy principles to ensure responsible data sharing and usage.
+        </p>
+    </div>
+
+    <!-- Feature: Documentation and Support -->
+    <div class="flex flex-col items-center p-6 border border-gray-200 rounded-lg shadow-lg">
+        <i class="fas fa-book text-4xl text-green-500"></i>
+        <p class="mt-4 font-semibold text-lg">Documentation and Support</p>
+        <p class="mt-2 text-sm text-gray-600">
+            Benefit from comprehensive documentation, tutorials, and user support to facilitate dataset discovery, understanding, and utilization.
+        </p>
+    </div>
+
+</div>
+
+    <!-- About Us Section -->
+    <section class="py-16 bg-white">
+        <div class="flex flex-col items-center">
+            <img src="{% static 'images/person-with-dog.png' %}" alt="Person with Dog" class="rounded-lg shadow-lg h-64 w-auto mb-8">
+            <div class="max-w-2xl text-center">
+                <h3 class="text-2xl font-semibold text-gray-800">About Us</h3>
+                <p class="text-gray-600 mt-4">: VetDataHub is an opensource veterinary datasets repository dedicated to advancing veterinary medicine through the sharing and exchange of diverse datasets. The project aims to make opensource veterinary data available to veterinary professionals, researchers, and data scientists from around the world to contribute, discover, and utilize valuable datasets for research, diagnosis, and decision-making in animal health.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dataset Section
+    <section class="py-16 bg-gray-100">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800">Dataset</h2>
+        </div>
+        <div class="flex justify-center space-x-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <img src="{% static 'images/doctor-image.png' %}" alt="Doctor 1" class="rounded-md w-full h-48 object-cover">
+                <h4 class="text-xl font-semibold text-gray-800 mt-4">Dataset Title</h4>
+                <p class="text-gray-600 mt-2">Brief description of the dataset. Click to learn more.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <img src="{% static 'images/doctor-image.png' %}" alt="Doctor 2" class="rounded-md w-full h-48 object-cover">
+                <h4 class="text-xl font-semibold text-gray-800 mt-4">Dataset Title</h4>
+                <p class="text-gray-600 mt-2">Brief description of the dataset. Click to learn more.</p>
+            </div>
+        </div>
+    </section>
+
+     Contributors Section
+    <section class="py-16 bg-white">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800">Meet Our Contributors</h2>
+            <p class="text-gray-600 mt-2">Dedicated contributors who help make VetDataHub a success.</p>
+        </div>
+        <div class="flex justify-center space-x-4">
+            <img src="{% static 'images/contributor1.png' %}" alt="Contributor 1" class="h-32 w-32 rounded-full shadow-lg">
+            <img src="{% static 'images/contributor1.png' %}" class="h-32 w-32 rounded-full shadow-lg">
+            <img src="{% static 'images/contributor1.png' %}" class="h-32 w-32 rounded-full shadow-lg">
+        </div>
+    </section>
+    -->
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6 md:flex md:justify-between">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h3 class="text-2xl font-semibold text-gray-800">Get in touch</h3>
+                <p class="text-gray-600 mt-4">We'd love to hear from you. Our friendly team is always here to chat.</p>
+                <ul class="mt-4 space-y-2 text-gray-600">
+                    <li><strong>Email:</strong> vetdatahub@gmail.com</li>
+                </ul>
+            </div>
+            <div class="md:w-1/2">
+                <h3 class="text-2xl font-semibold text-gray-800">Send us a message</h3>
+                <form method="post" action="{% url 'home:home' %}" class="mt-4 space-y-4">
+                      {% csrf_token %}
+
+                      {{ form }}
+                    <button class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

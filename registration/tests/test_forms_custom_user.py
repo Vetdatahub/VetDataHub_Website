@@ -7,7 +7,7 @@ from registration import forms
 from registration.users import UsernameField
 
 
-@override_settings(AUTH_USER_MODEL="test_app.CustomUser")
+
 class RegistrationFormTests(TestCase):
     """
     Test the default registration forms.
