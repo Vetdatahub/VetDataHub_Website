@@ -36,11 +36,10 @@ class Dataset(models.Model):
     @property
     def get_all_versions(self):
         return self.versions.all()
-    
+
     @property
     def average_rating(self):
-        total_ratings = Rating.objects.get(dataset=self)
-        return 
+        return self.ratings.aggregate(average=Avg('rating'))['average'] or 0
 
 class DatasetVersion(models.Model):
     dataset = models.ForeignKey(Dataset, related_name='versions', on_delete=models.CASCADE)
