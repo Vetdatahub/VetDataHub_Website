@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.db.models import Avg
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=120, unique=True)
 
 
 class Dataset(models.Model):
@@ -15,28 +20,57 @@ class Dataset(models.Model):
         ("other", "Other Data"),
     ]
 
-    LICENSE = [
-        ("mit", "MIT"),
-    ]
-
     name = models.CharField(max_length=255)
     description = models.TextField()
-    tags = models.CharField(max_length=255)
+    tags = models.ManyToManyField(Tag, related_name="datasets")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_public = models.BooleanField(default=True)
     dataset_type = models.CharField(max_length=50, choices=DATASET_TYPES)
-    license = models.CharField(max_length=50, choices=LICENSE)
-    format = models.CharField(max_length=255)
-    file = models.FileField(upload_to="datasets/")
-    version = models.IntegerField(default=1)
-    uploader = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse("dataset_detail", kwargs={"pk": self.pk})
+
+    @property
+    def get_all_versions(self):
+        return self.versions.all()
+
+    @property
+    def average_rating(self):
+        return self.ratings.aggregate(average=Avg('rating'))['average'] or 0
+
+class DatasetVersion(models.Model):
+    dataset = models.ForeignKey(Dataset, related_name='versions', on_delete=models.CASCADE)
+    version_number = models.PositiveIntegerField()
+    description = models.TextField(blank=True, help_text="Changes in this version")
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to='datasets/%Y/%m/%d/')
+    is_latest = models.BooleanField(default=False)  # Indicates if this is the latest version
+
+    class Meta:
+        unique_together = ('dataset', 'version_number')
+        ordering = ['-created_at']  # Latest versions first
+
+    def __str__(self):
+        return f"{self.dataset.title} (v{self.version_number})"
+
+    def save(self, *args, **kwargs):
+        # Automatically set the version number
+        if not self.pk:  # When creating a new version
+            latest_version = DatasetVersion.objects.filter(dataset=self.dataset).order_by('-version_number').first()
+            if latest_version:
+                self.version_number = latest_version.version_number + 1
+                latest_version.update(is_latest=False)
+            else:
+                self.version_number = 1
+
+        # Mark this version as the latest
+       
+        self.is_latest = True
+        super().save(*args, **kwargs)
 
 
 class Rating(models.Model):
