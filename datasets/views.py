@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,get_object_or_404
-
+from django.contrib.auth.decorators import login_required
 from datasets.forms import DatasetUploadForm,DatasetVersionForm,RatingForm,TagForm
 from datasets.models import  Dataset,DatasetVersion,Rating
 
@@ -21,14 +21,13 @@ def dataset_list(request):
 
 def dataset_detail(request, pk):
     dataset = get_object_or_404(Dataset, pk=pk)
-    average_rating = dataset.ratings.aggregate(average=Avg('rating'))['average'] or 0
-    user_rating = None
-    if request.user.is_authenticated:
-        user_rating = dataset.ratings.filter(user=request.user).first()
+    average_rating = dataset.average_rating()
+    versions = dataset.get_all_versions()
+
     return render(
         request,
         "datasets/dataset_detail.html",
-        {"dataset": dataset, "average_rating": average_rating, "user_rating": user_rating},
+        {"dataset": dataset, "average_rating": average_rating, "versions": versions},
     )
 
 @login_required
