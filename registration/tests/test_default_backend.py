@@ -17,9 +17,6 @@ from registration.models import RegistrationProfile
 from registration.users import UserModel
 
 
-@override_settings(
-    ROOT_URLCONF="test_app.urls_default", ACCOUNT_ACTIVATION_DAYS=7
-)
 class DefaultBackendViewTests(TransactionTestCase):
     """
     Test the default registration backend.

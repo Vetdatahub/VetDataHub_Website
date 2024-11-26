@@ -36,12 +36,13 @@ class RegistrationFormTests(TestCase):
 
         """
         data = {
-            "new_field": "custom username",
+            "username": "foo",
             "email": "foo@example.com",
-            "password1": "foo",
-            "password2": "foo",
+            "password1": "o09o@exa.c9om3",
+            "password2": "o09o@exa.c9om3",
         }
 
         form = forms.RegistrationForm(data=data)
+        print(form.errors)
 
         self.assertTrue(form.is_valid())
