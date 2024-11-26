@@ -16,7 +16,6 @@ class DatasetUploadForm(forms.ModelForm):
             "name",
             "description",
             "tags",
-            "is_public",
             "dataset_type",
         ]
         widgets = {
