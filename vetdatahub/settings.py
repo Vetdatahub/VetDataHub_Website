@@ -10,28 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
-
-from django.conf.global_settings import MEDIA_URL, STATIC_ROOT
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-_u%!6^k%&5*o5peu+27%w3fiamx_&%gd1l7!c!q0i((jzhh9)q"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['vetdatagub.pythonanywhere.com']
 
 # Application definition
 
@@ -49,6 +43,10 @@ INSTALLED_APPS = [
     "moderation",
     "home",
     "registration",
+    "crispy_forms",
+    "crispy_tailwind",
+    'cloudinary',
+    'gamma_cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -81,17 +79,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "vetdatahub.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("DB_NAME"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "USER": os.environ.get("DB_USERNAME")
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -111,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -122,20 +120,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = "static/"
-
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-MEDIA_URL = "media/"
-MEDIA_ROOT = "/media/"
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -148,3 +132,29 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "registration.User"
 
 SITE_ID = 1
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
+
+LOGIN_REDIRECT_URL = '/datasets/'
+SIGNUP_REDIRECT_URL = '/datasets/'
+LOGOUT_REDIRECT_URL = '/'
+
+CSRF_COOKIE_SECURE = True
+PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
+PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
+
+CLOUDINARY_STORAGE = {
+   'CLOUD_NAME': os.environ.get('CLOUD_NAME'),  # required
+   'API_KEY': os.environ.get('API_KEY'),  # required
+   'API_SECRET': os.environ.get('API_SECRET'),  # required
+   'BASE_STORAGE_LOCATION': '/vetdatahub/', #parent folder to keep all media and static assets under in cloudinary media library
+   'SECURE': True,
+       'DEFAULT_IMAGE_QUALITY': 'auto', # the default cloudinary quality setting for delivering images. Options are:auto;best;good;eco;low.
+       'IMAGE_FETCH_FORMAT': 'auto',
+}
+
+STATICFILES_STORAGE = 'gamma_cloudinary.storage.StaticCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'gamma_cloudinary.storage.CloudinaryStorage'
