@@ -7,7 +7,6 @@ from registration import forms
 from registration.users import UsernameField
 
 
-
 class RegistrationFormTests(TestCase):
     """
     Test the default registration forms.
