@@ -40,7 +40,6 @@ class RegistrationForm(BaseUserCreationForm):
         fields = (UsernameField(), "email")
 
 
-
 class ResendActivationForm(forms.Form):
     required_css_class = "required"
     email = forms.EmailField(label=_("E-mail"))

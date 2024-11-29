@@ -76,7 +76,7 @@ class RegistrationFormTests(TestCase):
                 "username": "foo",
                 "email": "foo@example.com",
                 "password1": "o09o@exa.c9om3",
-                "password2": "o09o@exa.c9om3"
+                "password2": "o09o@exa.c9om3",
             }
         )
         self.assertTrue(form.is_valid())

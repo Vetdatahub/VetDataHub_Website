@@ -1,9 +1,7 @@
-from  .settings import *
+from .settings import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "jnodq38ru2rf3ufif3dp occ9ucn8m238nucc921c-_u%!6^k%&5*o5peu+27%w3fiamx_&%gd1l7!c!q0i((jzhh9)q"
-)
+SECRET_KEY = "jnodq38ru2rf3ufif3dp occ9ucn8m238nucc921c-_u%!6^k%&5*o5peu+27%w3fiamx_&%gd1l7!c!q0i((jzhh9)q"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -24,9 +22,6 @@ DATABASES = {
 STATIC_URL = "static/"
 
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = "/media/"
-

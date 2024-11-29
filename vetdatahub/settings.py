@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['vetdatagub.pythonanywhere.com']
+ALLOWED_HOSTS = ["vetdatagub.pythonanywhere.com"]
 
 # Application definition
 
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django.contrib.sites',
+    "django.contrib.sites",
     "analytics",
     "community",
     "datasets",
@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     "registration",
     "crispy_forms",
     "crispy_tailwind",
-    'cloudinary',
-    'gamma_cloudinary',
+    "cloudinary",
+    "gamma_cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -88,7 +88,7 @@ DATABASES = {
         "NAME": os.environ.get("DB_NAME"),
         "HOST": os.environ.get("DB_HOST"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "USER": os.environ.get("DB_USERNAME")
+        "USER": os.environ.get("DB_USERNAME"),
     }
 }
 
@@ -137,24 +137,23 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
 
-LOGIN_REDIRECT_URL = '/datasets/'
-SIGNUP_REDIRECT_URL = '/datasets/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/datasets/"
+SIGNUP_REDIRECT_URL = "/datasets/"
+LOGOUT_REDIRECT_URL = "/"
 
 CSRF_COOKIE_SECURE = True
-PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
-PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
-PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
 
 CLOUDINARY_STORAGE = {
-   'CLOUD_NAME': os.environ.get('CLOUD_NAME'),  # required
-   'API_KEY': os.environ.get('API_KEY'),  # required
-   'API_SECRET': os.environ.get('API_SECRET'),  # required
-   'BASE_STORAGE_LOCATION': '/vetdatahub/', #parent folder to keep all media and static assets under in cloudinary media library
-   'SECURE': True,
-       'DEFAULT_IMAGE_QUALITY': 'auto', # the default cloudinary quality setting for delivering images. Options are:auto;best;good;eco;low.
-       'IMAGE_FETCH_FORMAT': 'auto',
+    "CLOUD_NAME": os.environ.get("CLOUD_NAME"),  # required
+    "API_KEY": os.environ.get("API_KEY"),  # required
+    "API_SECRET": os.environ.get("API_SECRET"),  # required
+    "BASE_STORAGE_LOCATION": "/vetdatahub/",
+    # parent folder to keep all media and static assets under in cloudinary media library
+    "SECURE": True,
+    "DEFAULT_IMAGE_QUALITY": "auto",
+    # the default cloudinary quality setting for delivering images. Options are:auto;best;good;eco;low.
+    "IMAGE_FETCH_FORMAT": "auto",
 }
 
-STATICFILES_STORAGE = 'gamma_cloudinary.storage.StaticCloudinaryStorage'
-DEFAULT_FILE_STORAGE = 'gamma_cloudinary.storage.CloudinaryStorage'
+STATICFILES_STORAGE = "gamma_cloudinary.storage.StaticCloudinaryStorage"
+DEFAULT_FILE_STORAGE = "gamma_cloudinary.storage.CloudinaryStorage"

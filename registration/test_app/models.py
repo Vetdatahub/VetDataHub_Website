@@ -7,4 +7,4 @@ class CustomUser(AbstractBaseUser):
     new_field = models.CharField(max_length=25)
     objects = BaseUserManager()
 
-    USERNAME_FIELD = 'new_field'
+    USERNAME_FIELD = "new_field"
