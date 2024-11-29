@@ -39,20 +39,29 @@ class Dataset(models.Model):
 
     @property
     def average_rating(self):
-        return self.ratings.aggregate(average=Avg('rating'))['average'] or 0
+        return self.ratings.aggregate(average=Avg("rating"))["average"] or 0
+
 
 class DatasetVersion(models.Model):
-    dataset = models.ForeignKey(Dataset, related_name='versions', on_delete=models.CASCADE)
+    dataset = models.ForeignKey(
+        Dataset, related_name="versions", on_delete=models.CASCADE
+    )
     version_number = models.PositiveIntegerField()
-    description = models.TextField(blank=True, help_text="Changes in this version")
-    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.TextField(
+        blank=True, help_text="Changes in this version"
+    )
+    created_by = models.ForeignKey(
+        get_user_model(), on_delete=models.SET_NULL, null=True, blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to='datasets/%Y/%m/%d/')
-    is_latest = models.BooleanField(default=False)  # Indicates if this is the latest version
+    file = models.FileField(upload_to="datasets/%Y/%m/%d/")
+    is_latest = models.BooleanField(
+        default=False
+    )  # Indicates if this is the latest version
 
     class Meta:
-        unique_together = ('dataset', 'version_number')
-        ordering = ['-created_at']  # Latest versions first
+        unique_together = ("dataset", "version_number")
+        ordering = ["-created_at"]  # Latest versions first
 
     def __str__(self):
         return f"{self.dataset.title} (v{self.version_number})"
@@ -60,7 +69,11 @@ class DatasetVersion(models.Model):
     def save(self, *args, **kwargs):
         # Automatically set the version number
         if not self.pk:  # When creating a new version
-            latest_version = DatasetVersion.objects.filter(dataset=self.dataset).order_by('-version_number').first()
+            latest_version = (
+                DatasetVersion.objects.filter(dataset=self.dataset)
+                .order_by("-version_number")
+                .first()
+            )
             if latest_version:
                 self.version_number = latest_version.version_number + 1
                 latest_version.update(is_latest=False)
@@ -68,7 +81,6 @@ class DatasetVersion(models.Model):
                 self.version_number = 1
 
         # Mark this version as the latest
-       
         self.is_latest = True
         super().save(*args, **kwargs)
 

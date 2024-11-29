@@ -1,6 +1,7 @@
 from django.forms import ModelForm
-from datasets.models import Dataset,DatasetVersion,Tag,Rating
+from datasets.models import Dataset, DatasetVersion, Tag, Rating
 from django import forms
+
 
 class DatasetUploadForm(forms.ModelForm):
     # Include DatasetVersion fields
@@ -40,6 +41,7 @@ class DatasetUploadForm(forms.ModelForm):
 
         return dataset
 
+
 class DatasetVersionForm(forms.ModelForm):
     class Meta:
         model = DatasetVersion
@@ -50,17 +52,24 @@ class DatasetVersionForm(forms.ModelForm):
         version = super().save(commit=False)
         if dataset:
             version.dataset = dataset
-            latest_version = DatasetVersion.objects.filter(dataset=dataset).order_by('-version_number').first()
-            version.version_number = (latest_version.version_number + 1) if latest_version else 1
+            latest_version = (
+                DatasetVersion.objects.filter(dataset=dataset)
+                .order_by("-version_number")
+                .first()
+            )
+            version.version_number = (
+                (latest_version.version_number + 1) if latest_version else 1
+            )
         if user:
             version.created_by = user
         version.is_latest = True  # Mark this as the latest version
         if commit:
             # Update the previous latest version
-            DatasetVersion.objects.filter(dataset=dataset, is_latest=True).update(is_latest=False)
+            DatasetVersion.objects.filter(
+                dataset=dataset, is_latest=True
+            ).update(is_latest=False)
             version.save()
         return version
-
 
 
 class RatingForm(forms.ModelForm):
@@ -68,7 +77,9 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = ["rating", "review"]
         widgets = {
-            "rating": forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 11)]),
+            "rating": forms.RadioSelect(
+                choices=[(i, str(i)) for i in range(1, 11)]
+            ),
             "review": forms.Textarea(attrs={"rows": 3}),
         }
 
@@ -83,7 +94,6 @@ class RatingForm(forms.ModelForm):
             rating.save()
         return rating
 
-from .models import Tag
 
 class TagForm(forms.ModelForm):
     class Meta:

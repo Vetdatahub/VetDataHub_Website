@@ -1,0 +1,21 @@
+[flake8]
+max-line-length = 117
+builtins =
+    raw_input,
+    unicode,
+exclude = .git,__pycache__,frontend,node_modules,migrations/*,*/migrations/*
+ignore =
+    # too many blank lines
+    E303,
+    # too many #'s for comments
+    E266,
+    # line break before binary operator
+    W503,
+    # module level import not at top of file
+    E402,
+    # whitespace before ':'
+    E203,
+    # Black will do this: when here, it complains about docstring because it sees all the different lines as one
+    E501,
+
+    F405
