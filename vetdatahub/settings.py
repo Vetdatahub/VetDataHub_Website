@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     "registration",
     "crispy_forms",
     "crispy_tailwind",
-    "cloudinary",
-    "gamma_cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -85,7 +83,7 @@ WSGI_APPLICATION = "vetdatahub.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DB_NAME"),
         "HOST": os.environ.get("DB_HOST"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),
@@ -143,18 +141,3 @@ SIGNUP_REDIRECT_URL = "/datasets/"
 LOGOUT_REDIRECT_URL = "/"
 
 CSRF_COOKIE_SECURE = True
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUD_NAME"),  # required
-    "API_KEY": os.environ.get("API_KEY"),  # required
-    "API_SECRET": os.environ.get("API_SECRET"),  # required
-    "BASE_STORAGE_LOCATION": "/vetdatahub/",
-    # parent folder to keep all media and static assets under in cloudinary media library
-    "SECURE": True,
-    "DEFAULT_IMAGE_QUALITY": "auto",
-    # the default cloudinary quality setting for delivering images. Options are:auto;best;good;eco;low.
-    "IMAGE_FETCH_FORMAT": "auto",
-}
-
-STATICFILES_STORAGE = "gamma_cloudinary.storage.StaticCloudinaryStorage"
-DEFAULT_FILE_STORAGE = "gamma_cloudinary.storage.CloudinaryStorage"
