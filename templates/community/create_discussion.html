@@ -1,0 +1,15 @@
+{% extends 'dashboard.html' %}
+{% load tailwind_filters %}
+{% block title %}New Discussion{% endblock %}
+ {% block main %}
+<h2 class="text-2xl font-semibold text-center mb-2">New Discussion</h2>
+    <form action="{% url 'create_discussion' dataset_id %}"  method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+     <input class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg mb-4"
+                   type="submit"
+                   value="Submit">
+
+        </form>
+
+{% endblock %}

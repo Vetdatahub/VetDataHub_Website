@@ -1,0 +1,95 @@
+{% extends "dashboard.html" %}
+{% load i18n tz static  %}
+{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Profile || VetDataHub" %}{% endif %}{% endblock %}
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+<section class="pt-8 pb-12 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col items-center">
+      <!-- Profile Card -->
+      <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
+        <!-- Profile Header -->
+        <div class="flex items-center space-x-6">
+          <img
+            class="w-24 h-24 rounded-full border-2 border-gray-200"
+            src="{% if user.user_profile.profile_image %}{{ user.user_profile.profile_image.url }}{% else %}https://via.placeholder.com/150{% endif %}"
+            alt="{{ user.user_profile.get_full_name }}"
+          />
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">
+              {{ user.user_profile.get_full_name }}
+            </h2>
+            <p class="text-sm text-gray-600">{{ user.email }}</p>
+          </div>
+        </div>
+
+        <!-- Profile Details -->
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold text-gray-700">Profile Details</h3>
+          <ul class="mt-4 space-y-2">
+            <li class="flex items-center">
+              <span class="w-32 font-medium text-gray-600">Profession:</span>
+              <span class="text-gray-800">
+                {% if user.user_profile.profession %}
+                {{ user.user_profile.profession }}
+                {% else %}
+                Not provided
+                {% endif %}
+              </span>
+            </li>
+            <li class="flex items-center">
+              <span class="w-32 font-medium text-gray-600">Organization:</span>
+              <span class="text-gray-800">
+                {% if user.user_profile.organization %}
+                {{ user.user_profile.organization }}
+                {% else %}
+                Not provided
+                {% endif %}
+              </span>
+            </li>
+            <li class="flex items-center">
+              <span class="w-32 font-medium text-gray-600">Website:</span>
+              <a
+                href="{{ user.user_profile.website }}"
+                target="_blank"
+                class="text-blue-600 hover:underline"
+              >
+                {% if user.user_profile.website %}
+                {{ user.user_profile.website }}
+                {% else %}
+                Not provided
+                {% endif %}
+              </a>
+            </li>
+            <li class="flex items-center">
+              <span class="w-32 font-medium text-gray-600">Date Created:</span>
+              <span class="text-gray-800">
+                {{ user.user_profile.date_created|date:"F j, Y" }}
+              </span>
+            </li>
+            <li class="flex items-center">
+              <span class="w-32 font-medium text-gray-600">Last Updated:</span>
+              <span class="text-gray-800">
+                {{ user.user_profile.updated|date:"F j, Y, g:i a" }}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-6 flex space-x-4">
+          <a
+            href="{% url 'profiles:profile_update' user.id %}"
+            class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          >
+            Edit Profile
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

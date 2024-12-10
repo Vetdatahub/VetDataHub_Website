@@ -1,0 +1,85 @@
+{% extends 'dashboard.html' %}
+{% load tailwind_filters %}
+{% block title %}New Dataset Version{% endblock %}
+ {% block main %}
+<h2 class="text-2xl font-semibold text-center mb-2">Add New Dataset Version</h2>
+    <form id="uploadForm" action="{% url 'datasets:add_dataset_version' dataset.id %}" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+     <input class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg mb-4"
+                   type="submit"
+                   value="Submit New Version">
+
+        </form>
+<!-- Progress Bar -->
+    <div id="progress-container" class="mt-6 hidden">
+        <div class="h-4 bg-gray-200 rounded-full">
+            <div
+                id="progress-bar"
+                class="h-4 bg-blue-600 rounded-full"
+                style="width: 0%;"
+            ></div>
+        </div>
+        <p id="progress-text" class="text-sm text-gray-600 mt-2 text-center">0%</p>
+    </div>
+
+    <!-- Message -->
+    <div id="message" class="mt-4 text-center text-sm"></div>
+<script>
+document.getElementById("uploadForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent normal form submission
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const progressContainer = document.getElementById("progress-container");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    const message = document.getElementById("message");
+
+    // Show the progress bar
+    progressContainer.classList.remove("hidden");
+
+    // Send the form data via AJAX
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", form.action, true);
+    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+
+    // Update progress
+    xhr.upload.addEventListener("progress", function (e) {
+        if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            progressBar.style.width = percentComplete + "%";
+            progressText.textContent = percentComplete + "%";
+        }
+    });
+
+    // Handle upload completion
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                message.textContent = "Upload successful!";
+                message.className = "text-green-600";
+            } else {
+                message.textContent = "Error: " + JSON.stringify(response.errors);
+                message.className = "text-red-600";
+            }
+        } else {
+            message.textContent = "An error occurred during the upload.";
+            message.className = "text-red-600";
+        }
+    };
+
+    // Handle errors
+    xhr.onerror = function () {
+        message.textContent = "Failed to upload. Please try again.";
+        message.className = "text-red-600";
+    };
+
+    xhr.send(formData);
+});
+</script>
+
+
+{% endblock %}

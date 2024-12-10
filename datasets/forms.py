@@ -47,28 +47,16 @@ class DatasetVersionForm(forms.ModelForm):
         model = DatasetVersion
         fields = ["file", "description"]
 
-    def save(self, commit=True, user=None, dataset=None):
-        # Create a new version linked to the given dataset
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        self.dataset = kwargs.pop("dataset")
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
         version = super().save(commit=False)
-        if dataset:
-            version.dataset = dataset
-            latest_version = (
-                DatasetVersion.objects.filter(dataset=dataset)
-                .order_by("-version_number")
-                .first()
-            )
-            version.version_number = (
-                (latest_version.version_number + 1) if latest_version else 1
-            )
-        if user:
-            version.created_by = user
-        version.is_latest = True  # Mark this as the latest version
-        if commit:
-            # Update the previous latest version
-            DatasetVersion.objects.filter(
-                dataset=dataset, is_latest=True
-            ).update(is_latest=False)
-            version.save()
+        version.created_by = self.user
+        version.dataset = self.dataset
+        version.save()
         return version
 
 
@@ -83,15 +71,17 @@ class RatingForm(forms.ModelForm):
             "review": forms.Textarea(attrs={"rows": 3}),
         }
 
-    def save(self, commit=True, user=None, dataset=None):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        self.dataset = kwargs.pop("dataset")
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
         # Associate rating with the current user and dataset
         rating = super().save(commit=False)
-        if user:
-            rating.user = user
-        if dataset:
-            rating.dataset = dataset
-        if commit:
-            rating.save()
+        rating.user = self.user
+        rating.dataset = self.dataset
+        rating.save()
         return rating
 
 

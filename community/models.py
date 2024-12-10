@@ -17,6 +17,7 @@ class Discussion(models.Model):
     title = models.CharField(
         max_length=255, help_text="Title of the discussion."
     )
+    description = models.TextField()
     dataset = models.ForeignKey(
         Dataset,
         on_delete=models.CASCADE,
@@ -48,6 +49,10 @@ class Discussion(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def get_comments(self):
+        return self.comments.all()
 
 
 class Comment(models.Model):

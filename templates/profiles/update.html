@@ -1,0 +1,55 @@
+{% extends "dashboard.html" %}
+{% load i18n tailwind_filters %}
+{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Update Profile || PyCon Africa" %}{% endif %}{% endblock %}
+
+
+{% block main %}
+<section class="py-10 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="shadow-lg rounded-lg bg-white p-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form Section -->
+        <div class="lg:col-span-2">
+          <section class="border border-gray-200 rounded-lg p-6">
+            <h4 class="text-lg font-semibold text-gray-700 mb-4">
+              Update your details below
+            </h4>
+            <form
+              action="{% url 'profiles:create_profile' %}"
+              enctype="multipart/form-data"
+              method="POST"
+              class="space-y-6"
+            >
+              {% csrf_token %}
+              {{ form|crispy }}
+              {{ form.media }}
+              <div class="flex justify-end">
+                <button
+                  type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md shadow-md transition"
+                  id="submit-id-update"
+                >
+                  Update Profile
+                  <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+        <!-- Optional Additional Section -->
+        <div>
+          <div class="p-6 bg-blue-100 rounded-lg">
+            <p class="text-sm text-blue-700">
+              <strong>Note:</strong> Ensure all fields are filled out accurately
+              to keep your profile up to date.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+ 

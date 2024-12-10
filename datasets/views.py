@@ -9,13 +9,13 @@ from datasets.forms import (
 from datasets.models import Dataset, DatasetVersion, Rating
 
 
-@login_required
+@login_required()
 def upload_dataset(request):
     if request.method == "POST":
         form = DatasetUploadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save(user=request.user)  # Pass the logged-in user
-            return redirect("dataset_list")
+            return redirect("datasets:dataset_list")
     else:
         form = DatasetUploadForm()
     return render(request, "datasets/upload_dataset.html", {"form": form})
@@ -26,10 +26,12 @@ def dataset_list(request):
     return render(request, "datasets/dataset_list.html", {"datasets": datasets})
 
 
+@login_required()
 def dataset_detail(request, pk):
     dataset = get_object_or_404(Dataset, pk=pk)
-    average_rating = dataset.average_rating()
-    versions = dataset.get_all_versions()
+    average_rating = dataset.average_rating
+    versions = dataset.get_all_versions
+    print(versions)
 
     return render(
         request,
@@ -42,22 +44,26 @@ def dataset_detail(request, pk):
     )
 
 
-@login_required
+@login_required()
 def add_dataset_version(request, dataset_id):
     dataset = get_object_or_404(Dataset, pk=dataset_id)
     if request.method == "POST":
-        form = DatasetVersionForm(request.POST, request.FILES)
+        print(request.FILES)
+        form = DatasetVersionForm(
+            request.POST, request.FILES, user=request.user, dataset=dataset
+        )
         if form.is_valid():
-            form.save(user=request.user, dataset=dataset)
-            return redirect("dataset_detail", pk=dataset_id)
+            form.save()
+            return redirect("datasets:dataset_detail", pk=dataset_id)
+        print(form.errors)
     else:
-        form = DatasetVersionForm()
+        form = DatasetVersionForm(user=request.user, dataset=dataset)
     return render(
         request, "datasets/add_version.html", {"form": form, "dataset": dataset}
     )
 
 
-@login_required
+@login_required()
 def rate_dataset(request, dataset_id):
     dataset = get_object_or_404(Dataset, pk=dataset_id)
     rating = Rating.objects.filter(user=request.user, dataset=dataset).first()
@@ -70,7 +76,7 @@ def rate_dataset(request, dataset_id):
         form = RatingForm(instance=rating)
     return render(
         request,
-        "datasets/rate_dataset.html",
+        "datasets/dataset_detail.html",
         {
             "form": form,
             "dataset": dataset,

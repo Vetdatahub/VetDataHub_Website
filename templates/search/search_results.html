@@ -1,0 +1,103 @@
+{% extends 'dashboard.html' %}
+{% block title %} Search Results{% endblock %}
+{% block main %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Search Results</h1>
+
+    {% if query %}
+        <p class="mb-4">Results for "<strong>{{ query }}</strong>":</p>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="w-1/4 bg-gray-100 p-4 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4">Filter Results</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#datasets" class="text-blue-600 hover:underline">
+                            Datasets ({{ dataset_results.count }})
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#discussions" class="text-blue-600 hover:underline">
+                            Discussions ({{ discussion_results.count }})
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#comments" class="text-blue-600 hover:underline">
+                            Comments ({{ comment_results.count }})
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="w-3/4 ml-8">
+                <!-- Dataset Results -->
+                <section id="datasets" class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Datasets</h2>
+                    {% if dataset_results %}
+                        <ul class="space-y-4">
+                            {% for dataset in dataset_results %}
+                                <li class="p-4 bg-gray-100 rounded-lg shadow-md">
+                                    <h3 class="text-lg font-semibold">
+                                        <a href="{% url 'datasets:dataset_detail' dataset.id %}" class="text-blue-600 hover:underline">
+                                            {{ dataset.name }}
+                                        </a>
+                                    </h3>
+                                    <p>{{ dataset.description|truncatewords:20 }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-gray-600">No datasets found.</p>
+                    {% endif %}
+                </section>
+
+                <!-- Discussion Results -->
+                <section id="discussions" class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Discussions</h2>
+                    {% if discussion_results %}
+                        <ul class="space-y-4">
+                            {% for discussion in discussion_results %}
+                                <li class="p-4 bg-gray-100 rounded-lg shadow-md">
+                                    <h3 class="text-lg font-semibold">
+                                        <a href="{% url 'discussion_detail' discussion.slug %}" class="text-blue-600 hover:underline">
+                                            {{ discussion.title }}
+                                        </a>
+                                    </h3>
+                                    <p>{{ discussion.description|truncatewords:20 }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-gray-600">No discussions found.</p>
+                    {% endif %}
+                </section>
+
+                <!-- Comment Results -->
+                <section id="comments" class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Comments</h2>
+                    {% if comment_results %}
+                        <ul class="space-y-4">
+                            {% for comment in comment_results %}
+                                <li class="p-4 bg-gray-100 rounded-lg shadow-md">
+                                    <p>{{ comment.content|truncatewords:20 }}</p>
+                                    <small class="text-gray-600">From discussion:
+                                        <a href="{% url 'discussion_detail' comment.discussion.slug %}" class="text-blue-600 hover:underline">
+                                            {{ comment.discussion.title }}
+                                        </a>
+                                    </small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-gray-600">No comments found.</p>
+                    {% endif %}
+                </section>
+            </main>
+        </div>
+    {% else %}
+        <p class="text-gray-600">Enter a query to search.</p>
+    {% endif %}
+</div>
+{% endblock %}

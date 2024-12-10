@@ -3,9 +3,14 @@ from community import views
 
 urlpatterns = [
     path(
-        "dataset/<int:dataset_id>/discussions/",
+        "discussions/",
         views.discussion_list,
         name="discussion_list",
+    ),
+    path(
+        "<int:dataset_id>/discussions/",
+        views.discussion_list_by_dataset,
+        name="discussion_list_by_dataset",
     ),
     path(
         "discussion/<slug:slug>/",
@@ -13,7 +18,7 @@ urlpatterns = [
         name="discussion_detail",
     ),
     path(
-        "dataset/<int:dataset_id>/create-discussion/",
+        "discussion/<int:dataset_id>/create-discussion/",
         views.create_discussion,
         name="create_discussion",
     ),
@@ -26,5 +31,10 @@ urlpatterns = [
         "comment/<int:comment_id>/edit/",
         views.edit_comment,
         name="edit_comment",
+    ),
+    path(
+        "comment/<int:comment_id>/delete/",
+        views.delete_comment,
+        name="delete_comment",
     ),
 ]

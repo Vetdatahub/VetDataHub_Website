@@ -1,0 +1,117 @@
+{% extends "dashboard.html" %}
+{% load i18n tz static tailwind_filters %}
+{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Profile || VetDataHub" %}{% endif %}{% endblock %}
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+<section class="pt-0">
+  <div class="container mx-auto">
+    <div class="flex flex-wrap">
+      <!-- Main content START -->
+      <div class="w-full xl:w-3/4">
+        <!-- Edit profile START -->
+        <div class="bg-transparent border border-gray-200 rounded-lg shadow">
+          <!-- Card header -->
+          <div class="border-b border-gray-200 px-6 py-4">
+            <div class="mb-4">
+              <h3 class="text-xl font-semibold">
+                Create {% if user_profile %}
+                {{ request.user.user_profile.first_name }} {{ request.user.user_profile.other_names }}
+                {{ request.user.user_profile.last_name }}
+                {% else %}
+                {% firstof user.get_short_name user.get_username|capfirst %}
+                {% endif %}'s profile below 📝
+              </h3>
+            </div>
+          </div>
+          <!-- Card body START -->
+          <div class="px-6 py-4">
+            <!-- Form -->
+            <form
+              class="border border-gray-200 rounded-lg p-6 mb-6"
+              action="{% url 'profiles:create_profile' %}"
+              enctype="multipart/form-data"
+              method="POST"
+            >
+              {% csrf_token %}
+              <div class="mb-4">
+                <div
+                  class="flex items-start bg-blue-100 text-blue-700 border border-blue-300 rounded-lg px-4 py-3 mb-4"
+                  role="alert"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M12 8v12m8-6a8 8 0 11-16 0 8 8 0 0116 0z"
+                    />
+                  </svg>
+                  <p>
+                    <strong>Information:</strong>
+                    <i
+                      >Kindly fill in your profile details to complete the PyClub
+                      lead registration.</i
+                    >
+                  </p>
+                </div>
+                {{ form|crispy }}
+                {{ form.media }}
+              </div>
+              <div class="mt-4">
+                <button
+                  class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                  id="submit-id-update"
+                  type="submit"
+                >
+                  Create Profile
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- Card body END -->
+        </div>
+        <!-- Edit profile END -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow mt-8 p-6">
+          <div
+            class="flex items-start bg-blue-50 text-blue-800 border border-blue-200 rounded-lg px-4 py-3"
+            role="alert"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M12 8v12m8-6a8 8 0 11-16 0 8 8 0 0116 0z"
+              />
+            </svg>
+            <p>
+              <strong>Hello there!</strong>
+              <br /><br />
+              Our website is currently undergoing updates; you may notice periodic
+              changes. We appreciate your patience and understanding during this
+              time.
+              <br /><br />
+              Dev Team 😊
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Main content END -->
+    </div>
+  </div>
+</section>
+
+{% endblock %}

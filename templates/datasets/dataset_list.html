@@ -1,0 +1,76 @@
+{% extends 'dashboard.html' %}
+{% block title %}List Datasets{% endblock %}
+{% block main %}
+<header class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900">Datasets</h1>
+    <p class="text-gray-600">
+        Browse our collection of datasets for your next project.
+    </p>
+</header>
+
+<!-- Datasets Grid -->
+{% if datasets %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {%  for dataset in datasets%}
+    <!-- Dataset Card -->
+    <div
+            class="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between"
+    >
+        <div>
+            <h2 class="text-lg font-bold text-gray-800">
+                {{dataset.name}}
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">
+                {{dataset.description}}
+
+            </p>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span
+                  class="text-sm text-gray-500 flex items-center space-x-1"
+          >
+            <svg
+                    class="w-5 h-5 text-gray-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+            >
+              <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 8h16M4 16h16"
+              />
+            </svg>
+
+             <span class="block text-sm text-gray-500">Category</span>
+                    {% for tag in dataset.tags.all %}
+                    <p class="text-gray-800">{{ tag.name }}</p>
+                    {% endfor %}
+          </span>
+            <a
+                    href="{% url 'datasets:dataset_detail' dataset.id %}"
+                    class="text-purple-600 text-sm font-medium hover:underline"
+            >
+                View Details
+            </a>
+
+        </div>
+        <!-- Uploader Details -->
+        <div class="flex items-center mt-4">
+
+            <div>
+                <p class="text-sm text-gray-600">
+                    {{dataset.created_at}}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+     <h2 class="text-lg font-bold text-gray-800">
+               No Datasets currently uploaded
+     </h2>
+    {% endif %}
+{% endblock %}

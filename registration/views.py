@@ -4,14 +4,21 @@ Views which allow users to create and activate accounts.
 """
 
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.module_loading import import_string
 from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
-
+from django.urls import reverse_lazy, reverse
 from registration.forms import ResendActivationForm
+from registration.models import Profile
+from .forms import UpdateForm
+from django.views.generic.edit import UpdateView
+from django.views.generic.base import TemplateView
+from django.utils.timezone import datetime
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 REGISTRATION_FORM_PATH = getattr(
     settings, "REGISTRATION_FORM", "registration.forms.RegistrationForm"
@@ -189,3 +196,79 @@ class ApprovalView(TemplateView):
 
     def get_success_url(self, user):
         raise NotImplementedError
+
+
+class ProfileView(TemplateView):
+    template_name = "profiles/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context["title"] = "My Profile"
+        context["year"] = datetime.now().year
+        context["details"] = User.objects.filter(username=self.request.user)
+        try:
+            context["user_profile"] = Profile.objects.filter(
+                user_id=self.request.user.pk
+            )
+        except Profile.DoesNotExist:
+            context["user_profile"] = ""
+        return context
+
+
+class CreateProfileView(TemplateView):
+    template_name = "profiles/create_profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateProfileView, self).get_context_data(**kwargs)
+        context["title"] = "Create Profile"
+        context["form"] = UpdateForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        profile_form = UpdateForm(
+            request.POST, request.FILES
+        )  # Include request.FILES for file uploads
+        if profile_form.is_valid():
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            for field, value in profile_form.cleaned_data.items():
+                if field == "profile_image" and not value:
+                    continue  # Skip updating profile_image if no new file is provided
+                setattr(profile, field, value)
+            profile.save()
+            return redirect(
+                "profiles:profile_home"
+            )  # Ensure you have the correct redirect URL
+        else:
+            return render(request, self.template_name, {"form": profile_form})
+
+
+class UpdateProfileView(UpdateView):
+    form_class = UpdateForm
+    model = Profile
+    template_name = (
+        "profiles/update.html"  # Ensure this template path is correct
+    )
+    success_url = reverse_lazy(
+        "registration:profile_update"
+    )  # Adjust the success URL as needed
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateProfileView, self).get_context_data(**kwargs)
+        context["title"] = "Update Profile"
+        context["year"] = datetime.now().year
+        try:
+            context["profile"] = Profile.objects.get(
+                user=self.request.user
+            )  # Use get() for a single object
+        except Profile.DoesNotExist:
+            context["profile"] = None
+        return context
+
+    def form_valid(self, form):
+        profile = form.save(commit=False)
+        profile.user = self.request.user
+        profile.user.name = profile.name
+        profile.user.last_name = profile.surname
+        profile.user.save()
+        profile.save()
+        return super(UpdateProfileView, self).form_valid(form)
