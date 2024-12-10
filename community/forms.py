@@ -9,7 +9,7 @@ class DiscussionForm(forms.ModelForm):
 
     class Meta:
         model = Discussion
-        fields = ["title"]
+        fields = ["title",'description']
         widgets = {
             "title": forms.TextInput(
                 attrs={
