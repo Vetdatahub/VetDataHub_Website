@@ -1,0 +1,53 @@
+{% extends 'dashboard.html' %}
+{% block title %}{% endblock %}
+{% block main %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Discussions</h1>
+    </div>
+
+    <!-- Discussions List -->
+    <div class="space-y-4">
+        <!-- Single Discussion Item -->
+        {% for discussion in page_obj %}
+        <div class="bg-white shadow-md rounded-lg p-4 flex flex-col">
+        <a href="{% url 'discussion_detail' discussion.slug %}" >
+
+                <h2 class="text-xl font-semibold text-gray-800">
+
+                    {{ discussion.title }}
+
+                </h2>
+                <div class="text-sm text-gray-600 flex justify-between items-center mt-2">
+                    <div>
+                        <span>Started by</span>
+                        <a href="#" class="text-blue-600 hover:underline">{{ discussion.created_by }}</a>
+                        <span>on {{ discussion.created_at }}</span>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-800">{{ discussion.get_comments.count }} comments</span>
+                    </div>
+                      </a>
+                </div>
+
+    </div>
+    {% endfor %}
+
+
+</div>
+
+<!-- Pagination -->
+<div class="flex justify-between items-center mt-6">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</div>
+</div>
+
+{% endblock %}
