@@ -30,7 +30,6 @@ class Dataset(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     dataset_type = models.CharField(max_length=50, choices=DATASET_TYPES)
 
-
     def __str__(self):
         return self.name
 
@@ -80,7 +79,7 @@ class DatasetVersion(models.Model):
             )
             if latest_version:
                 self.version_number = latest_version.version_number + 1
-                latest_version.is_latest=False
+                latest_version.is_latest = False
                 latest_version.save()
             else:
                 self.version_number = 1
@@ -112,4 +111,3 @@ class Rating(models.Model):
 
     def get_absolute_url(self):
         return reverse("rating_detail", kwargs={"pk": self.pk})
-

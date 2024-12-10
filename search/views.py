@@ -3,6 +3,7 @@ from django.shortcuts import render
 from datasets.models import Dataset
 from community.models import Discussion, Comment
 
+
 def search(request):
     query = request.GET.get("q", "").strip()
     dataset_results, discussion_results, comment_results = [], [], []
@@ -14,9 +15,7 @@ def search(request):
         discussion_results = Discussion.objects.filter(
             Q(title__icontains=query) | Q(description__icontains=query)
         )
-        comment_results = Comment.objects.filter(
-            Q(content__icontains=query)
-        )
+        comment_results = Comment.objects.filter(Q(content__icontains=query))
 
     return render(
         request,

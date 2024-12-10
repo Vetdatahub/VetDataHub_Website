@@ -46,13 +46,13 @@ class DatasetVersionForm(forms.ModelForm):
     class Meta:
         model = DatasetVersion
         fields = ["file", "description"]
-    def __init__(self,*args,**kwargs):
-        self.user =  kwargs.pop('user')
-        self.dataset =  kwargs.pop('dataset')
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        self.dataset = kwargs.pop("dataset")
         super().__init__(*args, **kwargs)
 
-
-    def save(self,commit=True):
+    def save(self, commit=True):
         version = super().save(commit=False)
         version.created_by = self.user
         version.dataset = self.dataset
@@ -70,16 +70,17 @@ class RatingForm(forms.ModelForm):
             ),
             "review": forms.Textarea(attrs={"rows": 3}),
         }
-    def __init__(self,*args,**kwargs):
-        self.user =  kwargs.pop('user')
-        self.dataset =  kwargs.pop('dataset')
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        self.dataset = kwargs.pop("dataset")
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
         # Associate rating with the current user and dataset
         rating = super().save(commit=False)
-        rating.user = user
-        rating.dataset = dataset
+        rating.user = self.user
+        rating.dataset = self.dataset
         rating.save()
         return rating
 

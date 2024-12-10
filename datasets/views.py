@@ -21,10 +21,10 @@ def upload_dataset(request):
     return render(request, "datasets/upload_dataset.html", {"form": form})
 
 
-
 def dataset_list(request):
     datasets = Dataset.objects.all()
     return render(request, "datasets/dataset_list.html", {"datasets": datasets})
+
 
 @login_required()
 def dataset_detail(request, pk):
@@ -49,7 +49,9 @@ def add_dataset_version(request, dataset_id):
     dataset = get_object_or_404(Dataset, pk=dataset_id)
     if request.method == "POST":
         print(request.FILES)
-        form = DatasetVersionForm(request.POST, request.FILES,user=request.user, dataset=dataset)
+        form = DatasetVersionForm(
+            request.POST, request.FILES, user=request.user, dataset=dataset
+        )
         if form.is_valid():
             form.save()
             return redirect("datasets:dataset_detail", pk=dataset_id)

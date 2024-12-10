@@ -49,17 +49,23 @@ class ResendActivationForm(forms.Form):
     email = forms.EmailField(label=_("E-mail"))
 
 
-
 class UpdateForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('name', 'surname', 'profile_image', 'profession', 'organization' ,'website', )
+        fields = (
+            "name",
+            "surname",
+            "profile_image",
+            "profession",
+            "organization",
+            "website",
+        )
 
     def __init__(self, *args, **kwargs):
         super(UpdateForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = 'id-Crispy_UpdateForm'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.add_input(Submit('update', 'Update Profile'))
+        self.helper.form_id = "id-Crispy_UpdateForm"
+        self.helper.form_class = "form-horizontal"
+        self.helper.add_input(Submit("update", "Update Profile"))

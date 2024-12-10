@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "datasets",
     "moderation",
     "home",
-    'search',
+    "search",
     "registration",
     "crispy_forms",
     "crispy_tailwind",

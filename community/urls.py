@@ -36,5 +36,5 @@ urlpatterns = [
         "comment/<int:comment_id>/delete/",
         views.delete_comment,
         name="delete_comment",
-    )
+    ),
 ]

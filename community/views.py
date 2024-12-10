@@ -22,13 +22,12 @@ def discussion_list_by_dataset(request, dataset_id):
         request, "community/discussion_list.html", {"page_obj": page_obj}
     )
 
+
 def discussion_list(request):
     """
     Displays a paginated list of discussions.
     """
-    discussions = Discussion.objects.all().order_by(
-        "-created_at"
-    )
+    discussions = Discussion.objects.all().order_by("-created_at")
     paginator = Paginator(discussions, 10)  # Show 10 discussions per page
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -36,6 +35,7 @@ def discussion_list(request):
     return render(
         request, "community/discussion_list.html", {"page_obj": page_obj}
     )
+
 
 @login_required
 def discussion_detail(request, slug):
@@ -50,7 +50,10 @@ def discussion_detail(request, slug):
         comment_id = request.POST.get("edit")
         if comment_id:
             comment_to_edit = get_object_or_404(
-                Comment, id=comment_id, created_by=request.user, discussion=discussion
+                Comment,
+                id=comment_id,
+                created_by=request.user,
+                discussion=discussion,
             )
             comment_form = CommentForm(request.POST, instance=comment_to_edit)
         else:
@@ -67,10 +70,15 @@ def discussion_detail(request, slug):
         if "edit" in request.GET:
             comment_id = request.GET.get("edit")
             comment_to_edit = get_object_or_404(
-                Comment, id=comment_id, created_by=request.user, discussion=discussion
+                Comment,
+                id=comment_id,
+                created_by=request.user,
+                discussion=discussion,
             )
         comment_form = (
-            CommentForm(instance=comment_to_edit) if comment_to_edit else CommentForm()
+            CommentForm(instance=comment_to_edit)
+            if comment_to_edit
+            else CommentForm()
         )
 
     return render(
@@ -101,7 +109,12 @@ def create_discussion(request, dataset_id):
     else:
         form = DiscussionForm()
 
-    return render(request, "community/create_discussion.html", {"form": form,'dataset_id':dataset_id})
+    return render(
+        request,
+        "community/create_discussion.html",
+        {"form": form, "dataset_id": dataset_id},
+    )
+
 
 @login_required
 def delete_discussion(request, slug):
@@ -116,6 +129,7 @@ def delete_discussion(request, slug):
     dataset_id = discussion.dataset_id
     discussion.delete()
     return redirect(reverse("discussion_list", args=[dataset_id]))
+
 
 @login_required
 def edit_comment(request, comment_id):
@@ -149,6 +163,7 @@ def edit_comment(request, comment_id):
         "discussions/edit_comment.html",
         {"form": form, "comment": comment},
     )
+
 
 @login_required
 def delete_comment(request, comment_id):
