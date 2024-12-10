@@ -9,7 +9,7 @@ ALLOWED_HOSTS = ALLOWED_HOSTS + [os.environ.get("ALLOWED_HOSTS")]
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "/static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 MEDIA_URL = "media/"
 MEDIA_ROOT = "/media/"
 
