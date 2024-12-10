@@ -495,3 +495,23 @@ class RegistrationProfile(models.Model):
                 email_message.attach_alternative(message_html, "text/html")
 
         email_message.send()
+
+
+class Profile(models.Model):
+    profile_image = models.ImageField(upload_to='profile_images/', default="", blank=True)
+    name = models.CharField(max_length=100, default='', blank=False)
+    surname = models.CharField(max_length=100, default='', blank=False)
+    profession = models.CharField(max_length=200, null=True, default="", blank=False, help_text="Profession. eg. Software Developer")
+    organization = models.CharField(max_length=200, null=True, default="", blank=True, help_text="Organization/Institution")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
+    website = models.URLField(max_length=200, help_text="Your website/blog URL.", null=True, blank=True)
+    date_created = models.DateTimeField(default=datetime_now)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.name)
+
+    def get_full_name(self):
+        return f"{self.name} {self.surname}"
+
+

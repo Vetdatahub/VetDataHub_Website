@@ -14,6 +14,10 @@ from django.contrib.auth.forms import BaseUserCreationForm
 from .users import UserModel
 from .users import UsernameField
 from .utils import _
+from .models import Profile
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
+
 
 User = UserModel()
 
@@ -43,3 +47,19 @@ class RegistrationForm(BaseUserCreationForm):
 class ResendActivationForm(forms.Form):
     required_css_class = "required"
     email = forms.EmailField(label=_("E-mail"))
+
+
+
+class UpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ('name', 'surname', 'profile_image', 'profession', 'organization' ,'website', )
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-Crispy_UpdateForm'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.add_input(Submit('update', 'Update Profile'))
