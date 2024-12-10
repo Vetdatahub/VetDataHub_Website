@@ -7,6 +7,9 @@ from django.db.models import Avg
 class Tag(models.Model):
     name = models.CharField(max_length=120, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Dataset(models.Model):
     """Dataset Model"""
@@ -26,6 +29,7 @@ class Dataset(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     dataset_type = models.CharField(max_length=50, choices=DATASET_TYPES)
+
 
     def __str__(self):
         return self.name
@@ -48,13 +52,13 @@ class DatasetVersion(models.Model):
     )
     version_number = models.PositiveIntegerField()
     description = models.TextField(
-        blank=True, help_text="Changes in this version"
+        blank=False, help_text="Changes in this version"
     )
     created_by = models.ForeignKey(
         get_user_model(), on_delete=models.SET_NULL, null=True, blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to="datasets/%Y/%m/%d/")
+    file = models.FileField(upload_to="datasets")
     is_latest = models.BooleanField(
         default=False
     )  # Indicates if this is the latest version
@@ -64,7 +68,7 @@ class DatasetVersion(models.Model):
         ordering = ["-created_at"]  # Latest versions first
 
     def __str__(self):
-        return f"{self.dataset.title} (v{self.version_number})"
+        return f"{self.dataset.name} (v{self.version_number})"
 
     def save(self, *args, **kwargs):
         # Automatically set the version number
@@ -76,7 +80,8 @@ class DatasetVersion(models.Model):
             )
             if latest_version:
                 self.version_number = latest_version.version_number + 1
-                latest_version.update(is_latest=False)
+                latest_version.is_latest=False
+                latest_version.save()
             else:
                 self.version_number = 1
 
@@ -91,7 +96,7 @@ class Rating(models.Model):
         Dataset, on_delete=models.CASCADE, related_name="ratings"
     )
     rating = models.IntegerField(
-        choices=[(i, i) for i in range(1, 11)]
+        choices=[(i, i) for i in range(1, 5)]
     )  # 1 to 10 rating
     review = models.TextField(blank=True, null=True)  # Optional review
     created_at = models.DateTimeField(auto_now_add=True)
@@ -107,3 +112,4 @@ class Rating(models.Model):
 
     def get_absolute_url(self):
         return reverse("rating_detail", kwargs={"pk": self.pk})
+

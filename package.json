@@ -1,0 +1,22 @@
+{
+  "name": "windmill-dashboard",
+  "version": "1.0.2",
+  "description": "A multi theme, completely accessible, with components and pages examples, ready for production dashboard.",
+  "scripts": {
+    "tailwind": "tailwindcss build public/assets/css/tailwind.css -o public/assets/css/tailwind.output.css",
+    "build": "postcss static/css/tailwind.css -o static/css/tailwind.output.css"
+  },
+  "author": "Estevan Maito <ejmaito@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "color": "3.1.2",
+    "commitizen": "4.1.2",
+    "cssnano": "4.1.10",
+    "cz-conventional-changelog": "3.2.0",
+    "postcss": "^8.4.49",
+    "postcss-cli": "7.1.1",
+    "release-it": "13.6.4",
+    "tailwindcss": "^3.4.16"
+  }
+}

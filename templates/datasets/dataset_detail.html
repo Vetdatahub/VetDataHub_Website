@@ -1,0 +1,161 @@
+{% extends 'dashboard.html' %}
+{% block title %}{% endblock %}
+{% block main %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Back Button -->
+    <a
+            href="/datasets"
+            class="text-purple-600 hover:underline text-sm mb-4 inline-block"
+    >
+        ← Back to Datasets
+    </a>
+    <h1 class="text-3xl font-bold ">{{dataset.name}}</h1>
+
+
+    <!-- Main Content -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <!-- Description Section -->
+        <section class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">
+                Description
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                {{dataset.description}}
+            </p>
+        </section>
+
+        <!-- Metadata Section -->
+        <section class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">
+                Metadata
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <div>
+                    <span class="block text-sm text-gray-500">Category</span>
+                    {% for tag in dataset.tags.all %}
+                    <p class="text-gray-800">{{ tag.name }}</p>
+                    {% endfor %}
+                </div>
+                <div>
+                    <span class="block text-sm text-gray-500">Rating</span>
+                    <p class="text-gray-800">{{dataset.average_rating}}</p>
+                </div>
+                <div>
+                    <span class="block text-sm text-gray-500">Dataset Type</span>
+                    <p class="text-gray-800">{{dataset.dataset_type}}</p>
+                </div>
+
+                <div>
+                    <span class="block text-sm text-gray-500">Updated On</span>
+                    <p class="text-gray-800">{{dataset.created_at}}</p>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <!-- Dataset Actions -->
+    <div class="flex justify-between items-center mb-6">
+        <!-- Create Discussion Button -->
+        <a
+                href="{% url 'create_discussion' dataset.id %}"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        >
+            Create Discussion
+        </a>
+
+        <a
+                href="{% url 'discussion_list_by_dataset' dataset.id %}"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        >
+            Discussions
+        </a>
+
+        <a
+                href="{% url 'datasets:add_dataset_version' dataset.id %}"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        >
+           New Dataset Version
+        </a>
+        <!-- Dataset Rating -->
+        <div class="flex items-center">
+            <p class="text-gray-800 font-medium mr-4">Rate this dataset:</p>
+            <div class="flex space-x-1">
+                <!-- Star Rating -->
+                <button aria-label="Rate 1 star" class="text-yellow-500">
+                    ★
+                </button>
+                <button aria-label="Rate 2 stars" class="text-yellow-500">
+                    ★
+                </button>
+                <button aria-label="Rate 3 stars" class="text-yellow-500">
+                    ★
+                </button>
+                <button aria-label="Rate 4 stars" class="text-gray-300 hover:text-yellow-500">
+                    ★
+                </button>
+                <button aria-label="Rate 5 stars" class="text-gray-300 hover:text-yellow-500">
+                    ★
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Datasets Version Section -->
+    <section class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            Datasets Version
+        </h2>
+        {% if versions %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for version in versions %}
+            <!-- Related Dataset Card -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <h3 class="text-lg font-bold text-gray-800">
+                    {{ version.dataset.name}}
+                </h3>
+                <p class="text-sm text-gray-600 mt-1">
+                    {{ version.description}}
+                </p>
+                <a
+                        href='{{ version.file.url }}'
+                        class="text-purple-600 text-sm font-medium hover:underline mt-2 block"
+                >
+                    Download →
+                </a>
+                <div>
+                    <span class="block text-sm text-gray-500">Size</span>
+                    <p class="text-gray-800">{{ version.file.size | filesizeformat}}</p>
+                </div>
+                 <!-- Uploader Section -->
+
+            <div class="flex items-center">
+                <img
+                        src="https://via.placeholder.com/60"
+                        alt="Uploader Profile"
+                        class="w-14 h-14 rounded-full mr-4"
+                />
+                <div>
+                    <p class="text-lg text-gray-800 font-medium">{{ version.created_by.username}}</p>
+                    <p class="text-sm text-gray-600">
+                        {{ version.created_at}}
+                    </p>
+                    <a
+                            href="{% url 'registration:profile_home' %}"
+                            class="text-purple-600 text-sm font-medium hover:underline"
+                    >
+                        View Profile →
+                    </a>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        {% endfor %}
+        {% else %}
+        {% endif %}
+    </section>
+    {% endblock %}
