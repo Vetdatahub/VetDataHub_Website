@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "registration",
     "crispy_forms",
     "crispy_tailwind",
+    'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,14 @@ SIGNUP_REDIRECT_URL = "/datasets/"
 LOGOUT_REDIRECT_URL = "/"
 
 CSRF_COOKIE_SECURE = True
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+
