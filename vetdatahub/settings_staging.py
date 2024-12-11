@@ -23,9 +23,7 @@ DO_SPACES_OBJECT_PARAMETERS = {
 }
 DO_SPACES_LOCATION = os.environ.get('DO_SPACES_LOCATION')
 
-MEDIA_URL = f"https://{DO_SPACES_BUCKET_NAME}.{DO_SPACES_ENDPOINT_URL}/{DO_SPACES_LOCATION}/"
+MEDIA_URL = DO_SPACES_ENDPOINT_URL
 STORAGES['default'] = {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
     }
-
-
