@@ -76,30 +76,79 @@
                 href="{% url 'datasets:add_dataset_version' dataset.id %}"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
         >
-           New Dataset Version
+            New Dataset Version
         </a>
-        <!-- Dataset Rating -->
-        <div class="flex items-center">
-            <p class="text-gray-800 font-medium mr-4">Rate this dataset:</p>
-            <div class="flex space-x-1">
-                <!-- Star Rating -->
-                <button aria-label="Rate 1 star" class="text-yellow-500">
-                    ★
-                </button>
-                <button aria-label="Rate 2 stars" class="text-yellow-500">
-                    ★
-                </button>
-                <button aria-label="Rate 3 stars" class="text-yellow-500">
-                    ★
-                </button>
-                <button aria-label="Rate 4 stars" class="text-gray-300 hover:text-yellow-500">
-                    ★
-                </button>
-                <button aria-label="Rate 5 stars" class="text-gray-300 hover:text-yellow-500">
-                    ★
-                </button>
+        <!-- Rating Modal -->
+
+        <div
+                x-data="{ open: false, rating: 0 }"
+                class="relative"
+        >
+            <!-- Trigger Button -->
+            <button
+                    @click="open = true"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+                Rate Dataset
+            </button>
+
+            <!-- Modal -->
+            <div
+                    x-show="open"
+                    @click.away="open = false"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            >
+                <div class="bg-white p-6 rounded shadow-lg w-96">
+                    <h2 class="text-lg font-semibold mb-4">Rate this Dataset</h2>
+
+                    <!-- Star Rating -->
+                    <div class="flex justify-center mb-4">
+                        <template x-for="star in 5">
+                            <svg
+                                    @click="rating = star"
+                                    :class="{ 'text-yellow-500': star <= rating, 'text-gray-300': star > rating }"
+                                    class="w-8 h-8 cursor-pointer"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                            >
+                                <path d="M12 .587l3.668 7.431L24 9.753l-6 5.839L19.335 24 12 20.354 4.665 24l1.335-8.408-6-5.839 8.332-1.735z"/>
+                            </svg>
+                        </template>
+                    </div>
+
+                    <!-- Comments -->
+                    <textarea
+                            name="review"
+                            id="review"
+                            rows="3"
+                            class="w-full border rounded p-2 focus:outline-blue-500"
+                            placeholder="Leave your comments (optional)"
+                    ></textarea>
+
+                    <!-- Submit Button -->
+                    <div class="mt-4 flex justify-end space-x-2">
+                        <button
+                                @click="open = false"
+                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                                hx-post="{% url 'datasets:rate_dataset' dataset.id %}"
+                                hx-include="[name=review]"
+                                hx-vals="{ rating: rating }"
+                                hx-swap="none"
+                                @click="open = false"
+                                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
     <!-- Datasets Version Section -->
     <section class="mt-8">
@@ -128,34 +177,34 @@
                     <span class="block text-sm text-gray-500">Size</span>
                     <p class="text-gray-800">{{ version.file.size | filesizeformat}}</p>
                 </div>
-                 <!-- Uploader Section -->
+                <!-- Uploader Section -->
 
-            <div class="flex items-center">
-                <img
-                        src="https://via.placeholder.com/60"
-                        alt="Uploader Profile"
-                        class="w-14 h-14 rounded-full mr-4"
-                />
-                <div>
-                    <p class="text-lg text-gray-800 font-medium">{{ version.created_by.username}}</p>
-                    <p class="text-sm text-gray-600">
-                        {{ version.created_at}}
-                    </p>
-                    <a
-                            href="{% url 'registration:profile_home' %}"
-                            class="text-purple-600 text-sm font-medium hover:underline"
-                    >
-                        View Profile →
-                    </a>
+                <div class="flex items-center">
+                    <img
+                            src="https://via.placeholder.com/60"
+                            alt="Uploader Profile"
+                            class="w-14 h-14 rounded-full mr-4"
+                    />
+                    <div>
+                        <p class="text-lg text-gray-800 font-medium">{{ version.created_by.username}}</p>
+                        <p class="text-sm text-gray-600">
+                            {{ version.created_at}}
+                        </p>
+                        <a
+                                href="{% url 'registration:profile_home' %}"
+                                class="text-purple-600 text-sm font-medium hover:underline"
+                        >
+                            View Profile →
+                        </a>
+                    </div>
+
+
                 </div>
 
 
             </div>
-
-
-        </div>
-        {% endfor %}
-        {% else %}
-        {% endif %}
+            {% endfor %}
+            {% else %}
+            {% endif %}
     </section>
     {% endblock %}
