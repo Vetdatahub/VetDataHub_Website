@@ -63,23 +63,27 @@ def add_dataset_version(request, dataset_id):
     )
 
 
-@login_required()
+@login_required
 def rate_dataset(request, dataset_id):
+    user = request.user
     dataset = get_object_or_404(Dataset, pk=dataset_id)
-    rating = Rating.objects.filter(user=request.user, dataset=dataset).first()
-    if request.method == "POST":
-        form = RatingForm(request.POST, instance=rating)
-        if form.is_valid():
-            form.save(user=request.user, dataset=dataset)
-            return redirect("dataset_detail", pk=dataset.pk)
-    else:
-        form = RatingForm(instance=rating)
-    return render(
-        request,
-        "datasets/dataset_detail.html",
-        {
-            "form": form,
-            "dataset": dataset,
-            "existing_rating": dataset.average_rating(),
-        },
-    )
+
+    if request.method == 'POST':
+        # Get the rating and optional review from POST data
+        new_rating = request.POST.get('rating',1)
+        review = request.POST.get('review', '')  # Default to empty string if no review
+            # Check if the user already rated this dataset
+        rating = Rating.objects.filter(dataset=dataset, user=user).first()
+
+        if rating:
+                # If the rating exists, update it
+            rating.rating = new_rating
+            rating.review = review
+            rating.save()
+        else:
+            # If no rating exists, create a new one
+            Rating.objects.create(dataset=dataset, user=user, rating=new_rating, review=review)
+
+        return redirect("dataset_detail", pk=dataset.pk)
+
+    return redirect("dataset_detail", pk=dataset.pk)

@@ -1,11 +1,18 @@
 import os
+import dj_database_url
 from .settings import *
 from dotenv import load_dotenv
 
 load_dotenv()
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-ALLOWED_HOSTS = ALLOWED_HOSTS + [os.environ.get("ALLOWED_HOSTS")]
+
+DATABASES['default'] = dj_database_url.config(
+    default=os.environ.get('DEFAULT_DB_URL'),
+    conn_max_age=600,
+    conn_health_checks=True,
+)
+ALLOWED_HOSTS = ['vetdatahub.tech','www.vetdatahub.tech']
 
 STATIC_URL = "/static/"
 
@@ -23,7 +30,7 @@ DO_SPACES_OBJECT_PARAMETERS = {
 }
 DO_SPACES_LOCATION = os.environ.get('DO_SPACES_LOCATION')
 
-MEDIA_URL = DO_SPACES_ENDPOINT_URL
+MEDIA_URL = '/media/'
 STORAGES['default'] = {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage"
     }

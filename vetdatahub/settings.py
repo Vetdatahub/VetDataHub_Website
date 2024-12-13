@@ -142,7 +142,7 @@ LOGIN_REDIRECT_URL = "/datasets/"
 SIGNUP_REDIRECT_URL = "/datasets/"
 LOGOUT_REDIRECT_URL = "/"
 
-CSRF_COOKIE_SECURE = True
+
 
 STORAGES = {
     "default": {
