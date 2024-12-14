@@ -142,7 +142,7 @@ LOGIN_REDIRECT_URL = "/datasets/"
 SIGNUP_REDIRECT_URL = "/datasets/"
 LOGOUT_REDIRECT_URL = "/"
 
-
+ACCOUNT_ACTIVATION_DAYS = 7
 
 STORAGES = {
     "default": {
