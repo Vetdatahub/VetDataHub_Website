@@ -8,6 +8,7 @@
   <div class="container mx-auto px-4">
     <div class="flex flex-col items-center">
       <!-- Profile Card -->
+      {% if user.user_profile.profile_image %}
       <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
         <!-- Profile Header -->
         <div class="flex items-center space-x-6">
@@ -88,6 +89,11 @@
 
         </div>
       </div>
+      {% else %}
+      <h2 class="text-2xl font-semibold text-gray-800">
+              You currently dont have a profile. Create one  <a class="color-blue-500 hover:underline" href="{% url 'registration:create_profile' %}">here</a>
+      </h2>
+      {% endif%}
     </div>
   </div>
 </section>
