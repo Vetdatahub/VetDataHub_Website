@@ -21,9 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-def trigger_error(request):
-    division_by_zero = 1 / 0
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
@@ -35,7 +32,6 @@ urlpatterns = [
     path("datasets/", include("datasets.urls")),
     path("analytics/", include("analytics.urls")),
     path("search/", include("search.urls")),
-    path('sentry-debug/', trigger_error),
 ]
 
 if settings.DEBUG:

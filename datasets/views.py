@@ -68,21 +68,23 @@ def rate_dataset(request, dataset_id):
     user = request.user
     dataset = get_object_or_404(Dataset, pk=dataset_id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         # Get the rating and optional review from POST data
-        new_rating = request.POST.get('rating',1)
-        review = request.POST.get('review', '')  # Default to empty string if no review
-            # Check if the user already rated this dataset
+        new_rating = request.POST.get("rating", 1)
+        review = request.POST.get(
+            "review", ""
+        )  # Default to empty string if no review
         rating = Rating.objects.filter(dataset=dataset, user=user).first()
 
         if rating:
-                # If the rating exists, update it
             rating.rating = new_rating
             rating.review = review
             rating.save()
         else:
             # If no rating exists, create a new one
-            Rating.objects.create(dataset=dataset, user=user, rating=new_rating, review=review)
+            Rating.objects.create(
+                dataset=dataset, user=user, rating=new_rating, review=review
+            )
 
         return redirect("dataset_detail", pk=dataset.pk)
 
