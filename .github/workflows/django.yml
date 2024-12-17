@@ -27,5 +27,5 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python manage.py test --settings=vetdatahub.settings_dev
+        pytest
 
