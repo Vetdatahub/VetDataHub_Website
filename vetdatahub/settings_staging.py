@@ -3,6 +3,7 @@ import dj_database_url
 from .settings import *
 from dotenv import load_dotenv
 
+
 load_dotenv()
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
