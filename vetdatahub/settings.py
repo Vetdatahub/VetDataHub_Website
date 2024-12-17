@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     "registration",
     "crispy_forms",
     "crispy_tailwind",
-    'storages',
-
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -152,5 +151,3 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
-
