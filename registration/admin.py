@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import get_user_model
-from .models import RegistrationProfile,Profile
+from .models import RegistrationProfile, Profile
 from .users import UsernameField
 from .utils import _
 
@@ -50,6 +50,7 @@ class RegistrationAdmin(admin.ModelAdmin):
             )
 
     resend_activation_email.short_description = _("Re-send activation emails")
+
 
 User = get_user_model()
 admin.site.register(RegistrationProfile, RegistrationAdmin)

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import sentry_sdk
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,8 +47,7 @@ INSTALLED_APPS = [
     "registration",
     "crispy_forms",
     "crispy_tailwind",
-    'storages',
-
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -152,6 +152,7 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
 
 sentry_sdk.init(
     dsn="https://9bb1da4c2e46d64f90eaf84bcd6eaf50@o4508472325505024.ingest.us.sentry.io/4508472341626880",
