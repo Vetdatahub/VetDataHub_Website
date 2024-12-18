@@ -50,14 +50,13 @@ class DatasetTestCase(TestCase):
         # Client for authentication
         cls.client = Client()
 
+
 class ModelTests(DatasetTestCase):
     def test_dataset_model_str(self):
         self.assertEqual(str(self.dataset), "Test Dataset")
 
     def test_version_model_str(self):
-        self.assertEqual(
-            str(self.version), f"{self.dataset.name} (v1)"
-        )
+        self.assertEqual(str(self.version), f"{self.dataset.name} (v1)")
 
     def test_average_rating(self):
         avg_rating = self.dataset.average_rating
@@ -75,6 +74,7 @@ class ModelTests(DatasetTestCase):
     def test_tag_model_str(self):
         self.assertEqual(str(self.tag), "Science")
 
+
 class FormTests(DatasetTestCase):
     def test_dataset_upload_form_valid(self):
         form_data = {
@@ -85,9 +85,7 @@ class FormTests(DatasetTestCase):
             "version_description": "Initial version",
         }
         form_file = SimpleUploadedFile("file.csv", b"file_content")
-        form = DatasetUploadForm(
-            data=form_data, files={"file": form_file}
-        )
+        form = DatasetUploadForm(data=form_data, files={"file": form_file})
         self.assertTrue(form.is_valid())
 
     def test_dataset_version_form_valid(self):
@@ -100,7 +98,6 @@ class FormTests(DatasetTestCase):
             dataset=self.dataset,
         )
         self.assertTrue(form.is_valid())
-
 
 
 class ViewTests(DatasetTestCase):
@@ -146,7 +143,8 @@ class ViewTests(DatasetTestCase):
     # Add Dataset Version View
     def test_add_version_view(self):
         add_version_url = reverse(
-            "datasets:add_dataset_version", kwargs={"dataset_id": self.dataset.pk}
+            "datasets:add_dataset_version",
+            kwargs={"dataset_id": self.dataset.pk},
         )
         form_file = SimpleUploadedFile("version2.csv", b"new_content")
         response = self.client.post(
@@ -155,7 +153,9 @@ class ViewTests(DatasetTestCase):
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(DatasetVersion.objects.filter(version_number=2).exists())
+        self.assertTrue(
+            DatasetVersion.objects.filter(version_number=2).exists()
+        )
 
     # Rate Dataset View
     def test_rate_dataset_view(self):
@@ -168,4 +168,6 @@ class ViewTests(DatasetTestCase):
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(Rating.objects.filter(rating=5, review="Excellent dataset").exists())
+        self.assertTrue(
+            Rating.objects.filter(rating=5, review="Excellent dataset").exists()
+        )

@@ -5,6 +5,7 @@ from django.core.mail import BadHeaderError
 from unittest.mock import patch
 from .forms import ContactForm
 
+
 class HomeViewTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -55,7 +56,7 @@ class ContactFormTests(TestCase):
             "name": "John Doe",
             "email": "john@example.com",
             "subject": "Test Subject",
-            "message": "This is a test message."
+            "message": "This is a test message.",
         }
         form = ContactForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -66,7 +67,7 @@ class ContactFormTests(TestCase):
             "name": "John Doe",
             "email": "",
             "subject": "",
-            "message": ""
+            "message": "",
         }
         form = ContactForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -80,7 +81,7 @@ class ContactFormTests(TestCase):
             "name": "John Doe",
             "email": "invalid-email",
             "subject": "Test Subject",
-            "message": "This is a test message."
+            "message": "This is a test message.",
         }
         form = ContactForm(data=form_data)
         self.assertFalse(form.is_valid())
