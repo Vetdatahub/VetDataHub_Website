@@ -534,3 +534,8 @@ class Profile(models.Model):
 
     def get_full_name(self):
         return f"{self.name} {self.surname}"
+
+    def get_profile_image_url(self):
+        if self.profile_image:
+            return self.profile_image.url
+        return None

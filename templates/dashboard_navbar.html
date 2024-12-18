@@ -100,7 +100,7 @@
                 >
                     <img
                             class="object-cover w-8 h-8 rounded-full"
-                            src="{{ request.user.user_profile.profile_image.url }}"
+                            src="{{ request.user.user_profile.profile_image.get_profile_image_url }}"
                             alt=""
                             aria-hidden="true"
                     />
