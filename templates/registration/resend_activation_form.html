@@ -4,22 +4,18 @@
 {% block title %}{% trans "Resend Activation Email" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form | crispy }}
-    <input type="submit" value="{% trans 'Submit' %}" />
-</form>
+<div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+    {% trans "Resend Activation Email" %}
+  </h2>
+  <form method="post" action="">
+      {% csrf_token %}
+      <div class="mb-4">
+        {{ form | crispy }}
+      </div>
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+        {% trans 'Submit' %}
+      </button>
+  </form>
+</div>
 {% endblock %}
-
-
-{% comment %}
-**registration/resend_activation_form.html**
-Used to show the form users will fill out to resend the activation email. By
-default, has the following context:
-
-``form``
-    The registration form. This will be an instance of some subclass
-    of ``django.forms.Form``; consult `Django's forms documentation
-    <http://docs.djangoproject.com/en/dev/topics/forms/>`_ for
-    information on how to display this in a template.
-{% endcomment %}

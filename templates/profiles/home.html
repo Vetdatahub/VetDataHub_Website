@@ -14,7 +14,7 @@
         <div class="flex items-center space-x-6">
           <img
             class="w-24 h-24 rounded-full border-2 border-gray-200"
-            src="{% if user.user_profile.profile_image %}{{ user.user_profile.profile_image.url }}{% else %}https://via.placeholder.com/150{% endif %}"
+            src="{% if user.user_profile.profile_image %}{{ user.user_profile.profile_image.get_profile_image_url }}{% else %}https://via.placeholder.com/150{% endif %}"
             alt="{{ user.user_profile.get_full_name }}"
           />
           <div>
