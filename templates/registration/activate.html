@@ -4,9 +4,19 @@
 {% block title %}{% trans "Activation Failure" %}{% endblock %}
 
 {% block content %}
-<p>{% trans "Account activation failed." %}</p>
+<div class="flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-red-600 mb-4">{% trans "Activation Failure" %}</h1>
+    <p class="text-gray-700">{% trans "Account activation failed." %}</p>
+    <a
+      href="{% url 'registration:resend_activation' %}"
+      class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+    >
+      {% trans "Resend Activation Email" %}
+    </a>
+  </div>
+</div>
 {% endblock %}
-
 
 {% comment %}
 **registration/activate.html**

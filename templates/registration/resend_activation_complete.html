@@ -4,19 +4,11 @@
 {% block title %}{% trans "Account Activation Resent" %}{% endblock %}
 
 {% block content %}
-<p>
-  {% blocktrans %}
-  We have sent an email to {{ email }} with further instructions.
-  {% endblocktrans %}
-</p>
+<div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
+  <p class="text-gray-700">
+    {% blocktrans %}
+    We have sent an email to <span class="font-medium text-blue-600">{{ email }}</span> with further instructions.
+    {% endblocktrans %}
+  </p>
+</div>
 {% endblock %}
-
-
-{% comment %}
-**registration/resend_activation_complete.html**
-Used after form for resending account activation is submitted. By default has
-the following context:
-
-``email``
-    The email address submitted in the resend activation form.
-{% endcomment %}

@@ -4,14 +4,26 @@
 {% block title %}{% trans "Account Activated" %}{% endblock %}
 
 {% block content %}
-<p>
-    {% trans "Your account is now activated." %}
+<div class="flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold text-green-600 mb-4">{% trans "Account Activated" %}</h1>
+    <p class="text-gray-700 mb-4">
+      {% trans "Your account is now activated." %}
+    </p>
     {% if not user.is_authenticated %}
-    {% trans "You can log in." %}
+      <p class="text-gray-700">
+        {% trans "You can log in." %}
+      </p>
+      <a
+        href="{% url 'login' %}"
+        class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+      >
+        {% trans "Log In" %}
+      </a>
     {% endif %}
-</p>
+  </div>
+</div>
 {% endblock %}
-
 
 {% comment %}
 **registration/activation_complete.html**
