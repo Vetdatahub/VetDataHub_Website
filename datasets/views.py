@@ -86,6 +86,6 @@ def rate_dataset(request, dataset_id):
                 dataset=dataset, user=user, rating=new_rating, review=review
             )
 
-        return redirect("dataset_detail", pk=dataset.pk)
+        return redirect("datasets:dataset_detail", pk=dataset.pk)
 
-    return redirect("dataset_detail", pk=dataset.pk)
+    return redirect("datasets:dataset_detail", pk=dataset.pk)
