@@ -64,6 +64,14 @@ You can join the VetDataHub community on discord [here](https://discord.gg/XEKB7
 We welcome contributions to improve VetDataHub! To contribute:
 [Read](./CONTRIBUTING.md)
 
+## 🙇‍♂️ Acknowledgments
+
+<p>This project is proudly supported by:</p>
+<p>
+  <a href="https://www.digitalocean.com/">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="201px">
+  </a>
+</p>
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
